@@ -4,14 +4,21 @@ import hello.instacloneproject.domain.User;
 import hello.instacloneproject.repository.UserRepository;
 import hello.instacloneproject.repository.dto.UserLoginDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @Transactional(readOnly = true)
+@Slf4j
 @RequiredArgsConstructor
 public class UserService {
 
@@ -19,13 +26,13 @@ public class UserService {
 
     @Transactional
     public void join(UserLoginDto userLoginDto){
-//        validateDuplicateUser(user);
+        validateDuplicateUser(userLoginDto);
         userRepository.save(dtoToUser(userLoginDto));
     }
 
-    private void validateDuplicateUser(User user) {
-        List<User> findUser = userRepository.findByEmail(user.getEmail());
-        if(!findUser.isEmpty()){
+    private void validateDuplicateUser(UserLoginDto userLoginDto) {
+        Optional<User> findUser = userRepository.findByEmail(userLoginDto.getEmail());
+        if(findUser.isPresent()){
             throw new IllegalStateException("이미 존재하는 email입니다.");
         }
     }
@@ -39,4 +46,5 @@ public class UserService {
                 .build();
 
     }
+
 }
