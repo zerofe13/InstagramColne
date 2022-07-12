@@ -4,8 +4,7 @@ import hello.instacloneproject.domain.User;
 import hello.instacloneproject.repository.dto.UserLoginDto;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.domain.AbstractAuditable_;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,14 +21,24 @@ public class LoginController {
         return "login";
     }
 
+//    @PostMapping("/login")
+//    public String login(String email, String password){
+//
+//    }
+
     @GetMapping("/signup")
-    public String signup(Model model){
-//        model.addAttribute("user",new UserLoginDto());
+    public String signup(){
         return "signup";
     }
     @PostMapping("/signup")
     public String signup(UserLoginDto userLoginDto){
         userService.join(userLoginDto);
         return "redirect:/login";
+    }
+
+    @GetMapping("/test")
+    public String test(Model model,@AuthenticationPrincipal  User user){
+        model.addAttribute("user",user);
+        return "test";
     }
 }
