@@ -35,6 +35,9 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 .password(findUser.get().getPassword())
                 .name(findUser.get().getName())
                 .phone(findUser.get().getPhone())
+                .profileImgUrl(findUser.get().getProfileImgUrl())
+                .title(findUser.get().getTitle())
+                .website(findUser.get().getWebsite())
                 .build();
 
 

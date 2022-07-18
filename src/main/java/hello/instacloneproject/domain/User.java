@@ -22,13 +22,21 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     private String phone;
     private String name;
 
+    private String profileImgUrl;
+
+    private String title;
+    private  String website;
+
     @Builder
-    public User(long id, String email, String password, String phone, String name) {
+    public User(long id, String email, String password, String phone, String name, String profileImgUrl, String title, String website) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.name = name;
+        this.profileImgUrl = profileImgUrl;
+        this.title = title;
+        this.website = website;
     }
 
     @Override
