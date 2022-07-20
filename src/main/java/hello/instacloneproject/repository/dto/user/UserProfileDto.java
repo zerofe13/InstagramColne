@@ -1,18 +1,11 @@
-package hello.instacloneproject.repository.dto;
+package hello.instacloneproject.repository.dto.user;
 
+import hello.instacloneproject.domain.User;
 import lombok.*;
 
 @Builder
 @Data
-public class UserDto {
-    private long id;
-
-    private String email;
-    private String phone;
-    private String name;
-
-    private String profileImgUrl;
-
-    private String title;
-    private  String website;
+public class UserProfileDto {
+    private User user;
+    private boolean loginUser;
 }

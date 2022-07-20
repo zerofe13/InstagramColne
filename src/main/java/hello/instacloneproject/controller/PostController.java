@@ -1,7 +1,7 @@
 package hello.instacloneproject.controller;
 
 import hello.instacloneproject.domain.User;
-import hello.instacloneproject.repository.dto.UserDto;
+import hello.instacloneproject.repository.dto.user.UserDto;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

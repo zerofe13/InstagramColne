@@ -2,9 +2,10 @@ package hello.instacloneproject.service;
 
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.repository.UserRepository;
-import hello.instacloneproject.repository.dto.UserDto;
-import hello.instacloneproject.repository.dto.UserSignupDto;
-import hello.instacloneproject.repository.dto.UserUpdateDto;
+import hello.instacloneproject.repository.dto.user.UserDto;
+import hello.instacloneproject.repository.dto.user.UserProfileDto;
+import hello.instacloneproject.repository.dto.user.UserSignupDto;
+import hello.instacloneproject.repository.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -35,7 +36,6 @@ public class UserService {
         findUser.setPhone(userUpdateDto.getPhone());
         findUser.setName(userUpdateDto.getName());
         findUser.setProfileImgUrl(userUpdateDto.getProfileImgUrl());
-        findUser.setTitle(userUpdateDto.getTitle());
         findUser.setTitle(userUpdateDto.getTitle());
 
     }

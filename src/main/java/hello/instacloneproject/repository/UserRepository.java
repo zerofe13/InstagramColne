@@ -21,6 +21,7 @@ public class UserRepository {
     public User findById(Long id){
         return em.find(User.class, id);
     }
+
     public Optional<User> findByEmail(String email){
         return em.createQuery("select u from User u where u.email = :email", User.class)
                 .setParameter("email", email)

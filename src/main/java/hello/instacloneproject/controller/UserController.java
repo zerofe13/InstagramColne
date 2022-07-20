@@ -1,9 +1,10 @@
 package hello.instacloneproject.controller;
 
 import hello.instacloneproject.domain.User;
-import hello.instacloneproject.repository.dto.UserDto;
-import hello.instacloneproject.repository.dto.UserSignupDto;
-import hello.instacloneproject.repository.dto.UserUpdateDto;
+import hello.instacloneproject.repository.dto.user.UserDto;
+import hello.instacloneproject.repository.dto.user.UserProfileDto;
+import hello.instacloneproject.repository.dto.user.UserSignupDto;
+import hello.instacloneproject.repository.dto.user.UserUpdateDto;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -11,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @Controller
 @RequiredArgsConstructor
@@ -46,6 +46,12 @@ public class UserController {
     @PostMapping("/user/update")
     public String update(UserUpdateDto userUpdateDto){
         userService.update(userUpdateDto);
-        return "redirect:/post/story";
+        return "redirect:/user/profile";
     }
+
+//    @GetMapping
+//    public String profile(@AuthenticationPrincipal User user, Model model){
+//        UserDto findUser = userService.findByEmail(user.getEmail());
+//        model.addAttribute("user")
+//    }
 }

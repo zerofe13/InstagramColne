@@ -1,11 +1,14 @@
 package hello.instacloneproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter @Setter
@@ -13,7 +16,7 @@ import java.util.Collection;
 @Table(name = "USER_TABLE")
 public class User implements UserDetails { // 스프링 시큐리티를 위해 UserDetails 구현
 
-    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue
     @Column(name = "user_id")
     private long id;
 
@@ -26,6 +29,10 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
 
     private String title;
     private  String website;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnoreProperties({"user"})
+    private List<Post> postList = new ArrayList<>();
 
     @Builder
     public User(long id, String email, String password, String phone, String name, String profileImgUrl, String title, String website) {

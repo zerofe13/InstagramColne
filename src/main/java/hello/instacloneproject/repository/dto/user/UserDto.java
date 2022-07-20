@@ -1,17 +1,14 @@
 package hello.instacloneproject.repository.dto.user;
 
-import hello.instacloneproject.domain.User;
 import lombok.Builder;
 import lombok.Data;
 
 @Builder
 @Data
-public class UserUpdateDto {
-
+public class UserDto {
     private long id;
 
     private String email;
-    private String password;
     private String phone;
     private String name;
 
@@ -19,5 +16,4 @@ public class UserUpdateDto {
 
     private String title;
     private  String website;
-
 }
