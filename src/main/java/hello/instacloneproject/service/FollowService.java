@@ -4,6 +4,7 @@ import hello.instacloneproject.domain.Follow;
 import hello.instacloneproject.repository.FollowRepository;
 import hello.instacloneproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -12,6 +13,7 @@ import java.util.List;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class FollowService {
 
     private final FollowRepository followRepository;
@@ -19,6 +21,9 @@ public class FollowService {
 
     @Transactional
     public void save(String followingEmail, String followedEmail){
+        if(checkFollow(followingEmail,followedEmail)){
+            throw new IllegalStateException("이미 팔로우중 입니다");
+        }
         Follow follow = Follow.builder()
                 .followingUser(userRepository.findByEmail(followingEmail).get())
                 .followedUser(userRepository.findByEmail(followedEmail).get())
@@ -38,13 +43,18 @@ public class FollowService {
 
     public boolean checkFollow(String followingEmail, String followedEmail){
         List<Follow> findFollows = followRepository.findByFollowingEmail(followingEmail);
-        return findFollows.stream().anyMatch(findFollow -> findFollow.getFollowedUser().getEmail() == followedEmail);
+        log.info("================checking===============");
+        for (Follow f: findFollows) {
+            log.info("f = {},{},{}",f.getId(),f.getFollowedUser(),f.getFollowingUser());
+
+        }
+        return findFollows.stream().anyMatch(findFollow -> findFollow.getFollowedUser().getEmail().equals(followedEmail));
     }
 
     @Transactional
     public void unFollow(String followingEmail, String followedEmail){
         List<Follow> findFollows = followRepository.findByFollowingEmail(followingEmail);
-        findFollows.stream().filter(findFollow -> findFollow.getFollowedUser().getEmail() == followedEmail).findFirst().ifPresent(followRepository::delete);
+        findFollows.stream().filter(findFollow -> findFollow.getFollowedUser().getEmail().equals(followedEmail)).findFirst().ifPresent(followRepository::delete);
     }
 
 }
