@@ -1,4 +1,4 @@
-package hello.instacloneproject.repository.dto.user;
+package hello.instacloneproject.dto.user;
 
 import lombok.Builder;
 import lombok.Data;

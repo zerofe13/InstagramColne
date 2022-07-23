@@ -1,13 +1,14 @@
 package hello.instacloneproject.service;
 
 import hello.instacloneproject.domain.User;
+import hello.instacloneproject.exception.NotFoundUserException;
 import hello.instacloneproject.repository.UserRepository;
-import hello.instacloneproject.repository.dto.user.UserDto;
-import hello.instacloneproject.repository.dto.user.UserProfileDto;
-import hello.instacloneproject.repository.dto.user.UserSignupDto;
-import hello.instacloneproject.repository.dto.user.UserUpdateDto;
+import hello.instacloneproject.dto.user.UserProfileDto;
+import hello.instacloneproject.dto.user.UserSignupDto;
+import hello.instacloneproject.dto.user.UserUpdateDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import net.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,32 +41,13 @@ public class UserService {
 
     }
 
-    public UserDto findByEmail(String Email){
-        Optional<User> findUser = userRepository.findByEmail(Email);
-        UserDto userDto = UserDto.builder()
-                .email(findUser.get().getEmail())
-                .id(findUser.get().getId())
-                .name(findUser.get().getName())
-                .phone(findUser.get().getPhone())
-                .profileImgUrl(findUser.get().getProfileImgUrl())
-                .title(findUser.get().getTitle())
-                .website(findUser.get().getWebsite())
-                .build();
-        return userDto;
+    public User findByEmail(String email){
+        Optional<User> findUser = userRepository.findByEmail(email);
+        return findUser.get();
     }
 
-    public UserDto findById(Long id){
-        User findUser = userRepository.findById(id);
-        UserDto userDto = UserDto.builder()
-                .email(findUser.getEmail())
-                .id(findUser.getId())
-                .name(findUser.getName())
-                .phone(findUser.getPhone())
-                .profileImgUrl(findUser.getProfileImgUrl())
-                .title(findUser.getTitle())
-                .website(findUser.getWebsite())
-                .build();
-        return userDto;
+    public User findById(Long id){
+        return userRepository.findById(id);
     }
 
     private void validateDuplicateUser(UserSignupDto userLoginDto) {
@@ -75,6 +57,11 @@ public class UserService {
         }
     }
 
+    /**
+     * @param dto
+     * @return User
+     * 회원가입 dto 를 이용하여 User 객체 생성
+     */
     private User dtoToUser(UserSignupDto dto){
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
         return User.builder()
@@ -88,5 +75,7 @@ public class UserService {
                 .build();
 
     }
+
+
 
 }

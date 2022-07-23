@@ -80,4 +80,5 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     public boolean isEnabled() {
         return true;
     }
+
 }

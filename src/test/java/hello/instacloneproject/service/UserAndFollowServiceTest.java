@@ -3,11 +3,9 @@ package hello.instacloneproject.service;
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.repository.FollowRepository;
 import hello.instacloneproject.repository.UserRepository;
-import hello.instacloneproject.repository.dto.user.UserDto;
-import hello.instacloneproject.repository.dto.user.UserSignupDto;
-import hello.instacloneproject.repository.dto.user.UserUpdateDto;
+import hello.instacloneproject.dto.user.UserSignupDto;
+import hello.instacloneproject.dto.user.UserUpdateDto;
 import lombok.extern.slf4j.Slf4j;
-import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +77,11 @@ class UserAndFollowServiceTest {
         //when
         userService.join(userT);
         //then
-        UserDto findUser = userService.findByEmail(email);
+        User findUser = userService.findByEmail(email);
+        User findByIdUser = userService.findById(findUser.getId());
         assertThat(userService.findByEmail(userT.getEmail())).isEqualTo(findUser);
         assertThat(userService.findByEmail(email).getPhone()).isEqualTo("0000");
+        assertThat(findUser).isEqualTo(findByIdUser);
     }
 
     @Test
