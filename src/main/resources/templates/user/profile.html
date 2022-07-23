@@ -14,90 +14,78 @@
                     <form id="userProfileImageForm">
                         <input type="file" name="profileImageFile" style="display: none;" id="userProfileImageInput" />
                     </form>
-                    <img class="profile-image" th:src="${userDto.user.profileImgUrl}" />
+                    <img class="profile-image" th:src="@{${'/profile_imgs/' + userProfile.user.profileImgUrl}}" onerror="this.src='/img/default_profile.jpg';"/>
                 </div>
             </div>
             <!--유저이미지end-->
             <!--유저정보 및 사진등록 구독하기-->
             <div class="profile-right">
-                <div class="name-group">
-                    <h2 th:text="${userDto.user.email}" ></h2>
-                    <button class="cta" th:if="${userDto.loginUser}">사진등록</button>
-                    <!--                <button class="cta" th:if="!${isUser} and !${isFollow}" th:onclick="|toggleSubscribe(${LoginId}, ${user.id}, this)|">팔로우</button>-->
-                    <!--                <button class="cta" th:if="!${isUser} and ${isFollow}" th:onclick="|toggleSubscribe(${LoginId}, ${user.id}, this)|">언팔로우</button>-->
-                    <button class="modi" th:if="${userDto.loginUser}" onclick="popup('.modal-info')">
+
+                <div class="name-group" >
+                    <h2 th:text="${userProfile.user.email}" ></h2>
+                    <button class="cta" th:if="${userProfile.loginUser}" onclick="location.href='/post/upload'">사진등록</button>
+                    <span></span>
+<!--                    Todo-->
+                    <button class="cta" th:if="!${userProfile.loginUser} and !${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.email}]], this)">팔로우</button>
+                    <button class="cta" th:if="!${userProfile.loginUser} and ${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.email}]], this)">언팔로우</button>
+                    <button class="modi" th:if="${userProfile.loginUser}" onclick="popup('.modal-info')">
                         <i class="fas fa-cog"></i>
                     </button>
                 </div>
 
                 <div class="subscribe">
                     <ul>
-                        <li>게시물<span>0</span></li>
-                        <li>구독정보<span>0</span>
+                        <li>게시물<span th:text="${userProfile.postCount}" ></span></li>
+                        <li><a class="follow" th:onclick="|followerInfoModalOpen(${userProfile.user.id})|" style="text-decoration:none">팔로워 </a><span th:text="${userProfile.followerCount}" ></span>
+                        <li><a class="follow" th:onclick="|followingInfoModalOpen(${userProfile.user.id})|" style="text-decoration:none">팔로잉 </a><span th:text="${userProfile.followingCount}" ></span>
                     </ul>
                 </div>
                 <div class="state">
-                    <h4 th:text="${userDto.user.title}"></h4>
-                    <h4 th:text="${userDto.user.website}"></h4>
+                    <h4 th:text="${userProfile.user.title}"></h4>
+                    <h4 th:text="${userProfile.user.website}"></h4>
                 </div>
             </div>
             <!--유저정보 및 사진등록 구독하기 end-->
         </div>
     </section>
     <!--게시물컨섹션-->
-    <section id="tab-content">
-        <!--게시물컨컨테이너-->
-        <div class="profileContainer">
-            <!--그냥 감싸는 div (지우면이미지커짐)-->
-            <div id="tab-1-content" class="tab-content-item show">
-                <!--게시물컨 그리드배열-->
-                <div class="tab-1-content-inner">
-                    <!--아이템들-->
-                    <c:forEach var="image" items="${dto.user.images}"> <!-- EL표현식에서 변수명을 적으면 get함수가 자동 호출된다. -->
-                        <div class="img-box">
-                            <a href=""> <img src="/img/sample.jpg" />
-                            </a>
-                            <div class="comment">
-                                <a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </c:forEach>
-                    <c:forEach var="image" items="${dto.user.images}"> <!-- EL표현식에서 변수명을 적으면 get함수가 자동 호출된다. -->
-                        <div class="img-box">
-                            <a href=""> <img src="/img/sample.jpg" />
-                            </a>
-                            <div class="comment">
-                                <a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </c:forEach>
-                    <c:forEach var="image" items="${dto.user.images}"> <!-- EL표현식에서 변수명을 적으면 get함수가 자동 호출된다. -->
-                        <div class="img-box">
-                            <a href=""> <img src="/img/sample.jpg" />
-                            </a>
-                            <div class="comment">
-                                <a href="#" class=""> <i class="fas fa-heart"></i><span>${image.likeCount}</span>
-                                </a>
-                            </div>
-                        </div>
-                    </c:forEach>
-                    <!--아이템들end-->
-                </div>
-            </div>
-        </div>
-    </section>
+<!--    <section id="tab-content">-->
+<!--        &lt;!&ndash;게시물컨컨테이너&ndash;&gt;-->
+<!--        <div class="profileContainer">-->
+<!--            &lt;!&ndash;그냥 감싸는 div (지우면이미지커짐)&ndash;&gt;-->
+<!--            <div id="tab-1-content" class="tab-content-item show">-->
+<!--                &lt;!&ndash;게시물컨 그리드배열&ndash;&gt;-->
+<!--                <div class="tab-1-content-inner" id="img-box" >-->
+<!--                    &lt;!&ndash;아이템들&ndash;&gt;-->
+<!--                    <div class="img-box" th:each="post : ${userProfile.user.postList}" th:onclick="|postPopup(${post.id}, '.modal-post')|">-->
+<!--                        <img th:src="@{${'/upload/' + post.postImgUrl}}" />-->
+<!--                        <div class="comment">-->
+<!--                            <a> <i class="fas fa-heart"></i><span th:text="${post.likesCount}"></span></a>-->
+<!--                        </div>-->
+<!--                    </div>-->
+<!--                    &lt;!&ndash;아이템들end&ndash;&gt;-->
+<!--                </div>-->
+<!--            </div>-->
+<!--        </div>-->
+<!--    </section>-->
 
     <!--로그아웃, 회원정보변경 모달-->
-    <div class="modal-info" >
+    <div class="modal-info">
         <div class="modal">
             <button onclick="location.href='/user/update'">회원정보 변경</button>
-            <button >로그아웃</button>
+            <button onclick="location.href='/logout'">로그아웃</button>
             <button onclick="closePopup('.modal-info')">취소</button>
         </div>
     </div>
     <!--로그아웃, 회원정보변경 모달 end-->
+
+    <!--포스트 상세 정보 모달-->
+    <div class="modal-post">
+        <div class="subscribe">
+            <div class="subscribe-list" id="postInfoModal"></div>
+        </div>
+    </div>
+    <!--포스트 상세 정보 모달 end-->
 
     <!--프로필사진 바꾸기 모달-->
     <div class="modal-image" >
@@ -108,20 +96,33 @@
         </div>
     </div>
     <!--프로필사진 바꾸기 모달end-->
-    <div class="modal-subscribe">
+
+    <div class="modal-follower">
         <div class="subscribe">
             <div class="subscribe-header">
-                <span>구독정보</span>
-                <button>
+                <span>팔로워</span>
+                <button class="exit" onclick="modalClose()">
                     <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="subscribe-list" id="subscribeModalList">
+            <div class="subscribe-list" id="followerModalList"></div>
+        </div>
+    </div>
+
+    <div class="modal-following">
+        <div class="subscribe">
+            <div class="subscribe-header">
+                <span>팔로잉</span>
+                <button class="exit" onclick="modalClose()">
+                    <i class="fas fa-times"></i>
+                </button>
             </div>
+            <div class="subscribe-list" id="followingModalList"></div>
         </div>
     </div>
     <footer th:replace="layout/common :: footer('footer')"></footer>
 </main>
-<script src="/js/profile.js"></script>
+<script src="/js/profile.js">
+</script>
 </body>
 </html>
