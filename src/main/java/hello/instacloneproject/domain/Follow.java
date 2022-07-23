@@ -14,7 +14,7 @@ public class Follow {
     @GeneratedValue
     private long id;
 
-    @JoinColumn(name = "follwing_user_id")
+    @JoinColumn(name = "following_user_id")
     @ManyToOne
     private User followingUser;
 
