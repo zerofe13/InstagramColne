@@ -3,6 +3,7 @@ package hello.instacloneproject.repository;
 
 import hello.instacloneproject.domain.Follow;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
@@ -10,6 +11,7 @@ import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
+@Slf4j
 public class FollowRepository {
 
     private final EntityManager em;
@@ -20,7 +22,7 @@ public class FollowRepository {
 
 
     public List<Follow> findByFollowingEmail(String email){
-        return em.createQuery("select f from Follow f join fetch f.followingUser where f.followingUser.email = :email",Follow.class)
+        return em.createQuery("select f from Follow f where f.followingUser.email = :email",Follow.class)
                 .setParameter("email",email)
                 .getResultList();
 
@@ -29,7 +31,7 @@ public class FollowRepository {
 
 
     public List<Follow> findByFollowedEmail(String email){
-        return em.createQuery("select f from Follow f join fetch f.followedUser where f.followedUser.email = :email",Follow.class)
+        return em.createQuery("select f from Follow f where f.followedUser.email = :email",Follow.class)
                 .setParameter("email",email)
                 .getResultList();
 
