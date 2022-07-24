@@ -1,6 +1,7 @@
 package hello.instacloneproject.service;
 
 import hello.instacloneproject.domain.User;
+import hello.instacloneproject.dto.Follow.FollowDto;
 import hello.instacloneproject.repository.FollowRepository;
 import hello.instacloneproject.repository.UserRepository;
 import hello.instacloneproject.dto.user.UserSignupDto;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.*;
@@ -133,12 +135,15 @@ class UserAndFollowServiceTest {
         followService.save(email,"a@a.com");
         followService.save(email,"b@b.com");
         followService.save(email,"c@c.com");
+        followService.save("a@a.com",email);
         followService.save("b@b.com","a@a.com");
         //then
         assertThat(followService.checkFollow(email,"a@a.com")).isTrue();
         assertThat(followService.countFollowing(email)).isEqualTo(3);
-        assertThat(followService.countFollower(email)).isEqualTo(0);
+        assertThat(followService.countFollower(email)).isEqualTo(1);
         assertThat(followService.countFollower("a@a.com")).isEqualTo(2);
+        assertThat(followRepository.findByFollowingEmailAndFollowerEmail(email,"a@a.com").get().isBidirectional()).isTrue();
+        assertThat(followRepository.findByFollowingEmailAndFollowerEmail("a@a.com",email).get().isBidirectional()).isTrue();
     }
 
     @Test
@@ -156,13 +161,41 @@ class UserAndFollowServiceTest {
         followService.save(email,"b@b.com");
         followService.save(email,"c@c.com");
         followService.save("b@b.com","a@a.com");
+        followService.save("a@a.com",email);
 
         followService.unFollow(email,"a@a.com");//unfollow
         //then
         assertThat(followService.checkFollow(email,"a@a.com")).isFalse();
         assertThat(followService.countFollowing(email)).isEqualTo(2);
-        assertThat(followService.countFollower(email)).isEqualTo(0);
+        assertThat(followService.countFollower(email)).isEqualTo(1);
         assertThat(followService.countFollower("a@a.com")).isEqualTo(1);
 
+        assertThat(followRepository.findByFollowingEmailAndFollowerEmail("a@a.com",email).get().isBidirectional()).isFalse();
+
+    }
+
+    @Test
+    void getFollowers(){
+        //given
+        String email = "t@t.com";
+        UserSignupDto userT = UserSignupDto.builder().email(email)
+                .password("123")
+                .name("t")
+                .phone("123123")
+                .build();
+
+        userService.join(userT);
+        //when
+        followService.save(email,"a@a.com");
+        followService.save(email,"b@b.com");
+        followService.save(email,"c@c.com");
+        followService.save("a@a.com",email);
+        followService.save("b@b.com","a@a.com");
+
+        //then
+        List<FollowDto> followingList = followService.getFollowingList(email);
+        assertThat(followingList).extracting("email").contains("a@a.com","b@b.com","c@c.com");
+        List<FollowDto> followedList = followService.getFollowedList(email);
+        assertThat(followingList).extracting("email").contains("a@a.com");
     }
 }
