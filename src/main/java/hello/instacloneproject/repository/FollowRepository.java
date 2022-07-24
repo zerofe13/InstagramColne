@@ -5,10 +5,11 @@ import hello.instacloneproject.domain.Follow;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.EntityManager;
 import java.util.List;
 import java.util.Optional;
+
+
 
 @Repository
 @RequiredArgsConstructor
@@ -16,6 +17,7 @@ import java.util.Optional;
 public class FollowRepository {
 
     private final EntityManager em;
+
 
     public void save(Follow follow){
         em.persist(follow);

@@ -136,14 +136,18 @@ class UserAndFollowServiceTest {
         followService.save(email,"b@b.com");
         followService.save(email,"c@c.com");
         followService.save("a@a.com",email);
+        followService.save("d@d.com",email);
+        followService.save("a@a.com","d@d.com");
+        followService.save("a@a.com","c@c.com");
         followService.save("b@b.com","a@a.com");
         //then
         assertThat(followService.checkFollow(email,"a@a.com")).isTrue();
         assertThat(followService.countFollowing(email)).isEqualTo(3);
-        assertThat(followService.countFollower(email)).isEqualTo(1);
+        assertThat(followService.countFollower(email)).isEqualTo(2);
         assertThat(followService.countFollower("a@a.com")).isEqualTo(2);
-        assertThat(followRepository.findByFollowingEmailAndFollowerEmail(email,"a@a.com").get().isBidirectional()).isTrue();
-        assertThat(followRepository.findByFollowingEmailAndFollowerEmail("a@a.com",email).get().isBidirectional()).isTrue();
+
+
+
     }
 
     @Test
@@ -170,7 +174,6 @@ class UserAndFollowServiceTest {
         assertThat(followService.countFollower(email)).isEqualTo(1);
         assertThat(followService.countFollower("a@a.com")).isEqualTo(1);
 
-        assertThat(followRepository.findByFollowingEmailAndFollowerEmail("a@a.com",email).get().isBidirectional()).isFalse();
 
     }
 
@@ -190,12 +193,16 @@ class UserAndFollowServiceTest {
         followService.save(email,"b@b.com");
         followService.save(email,"c@c.com");
         followService.save("a@a.com",email);
+        followService.save("d@d.com",email);
+        followService.save("a@a.com","d@d.com");
+        followService.save("a@a.com","c@c.com");
         followService.save("b@b.com","a@a.com");
 
         //then
-        List<FollowDto> followingList = followService.getFollowingList(email);
+        List<FollowDto> followingList = followService.getFollowingList(email,email);
         assertThat(followingList).extracting("email").contains("a@a.com","b@b.com","c@c.com");
-        List<FollowDto> followedList = followService.getFollowedList(email);
-        assertThat(followingList).extracting("email").contains("a@a.com");
+        List<FollowDto> followedList = followService.getFollowedList(email,email);
+        assertThat(followedList).hasSize(2);
+
     }
 }

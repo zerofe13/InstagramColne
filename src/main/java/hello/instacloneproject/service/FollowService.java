@@ -27,17 +27,9 @@ public class FollowService {
         if(checkFollow(followingEmail,followedEmail)){
             throw new IllegalStateException("이미 팔로우중 입니다");
         }
-
-        boolean bidirect = checkFollow(followedEmail,followingEmail);
-        if(bidirect){
-            Optional<Follow> findFollow = followRepository.findByFollowingEmailAndFollowerEmail(followedEmail, followingEmail);
-            findFollow.get().setBidirectional(true);
-        }
-
         Follow follow = Follow.builder()
                 .followingUser(userRepository.findByEmail(followingEmail).get())
                 .followedUser(userRepository.findByEmail(followedEmail).get())
-                .bidirectional(bidirect)
                 .build();
         followRepository.save(follow);
     }
@@ -57,17 +49,29 @@ public class FollowService {
         return findFollow.isPresent();
     }
 
-    public List<FollowDto> getFollowedList(String userEmail){
+    /**
+     * 현재 프로필에 대한 팔로워 리스트정보를 가지고오는 메소드
+     * 로그인 된 유저가 해당 팔로워를 팔로잉 하고있는지 팔로워가 자기자신인지에 대한 정보도 제공해준다.
+     * @param profileEmail
+     * @param userEmail
+     * @return
+     */
+
+    public List<FollowDto> getFollowedList(String profileEmail,String userEmail){
         List<FollowDto> result = new ArrayList<>();
-        List<Follow> findFollows = followRepository.findByFollowedEmail(userEmail);
+        List<Follow> findFollows = followRepository.findByFollowedEmail(profileEmail);
+        List<Follow> userFollows = followRepository.findByFollowingEmail(userEmail);
+
 
         for (Follow findFollow: findFollows) {
+            boolean state = userFollows.stream().anyMatch(userFollow -> findFollow.getFollowingUser().getEmail().equals(userFollow.getFollowedUser().getEmail()));
+
             FollowDto followDto = FollowDto.builder()
                     .id(findFollow.getFollowingUser().getId())
                     .profileImgUrl(findFollow.getFollowingUser().getProfileImgUrl())
                     .email(findFollow.getFollowingUser().getEmail())
                     .name(findFollow.getFollowingUser().getName())
-                    .followState(findFollow.isBidirectional())
+                    .followState(state)
                     .loginUser(userEmail.equals(findFollow.getFollowingUser().getEmail()))
                     .build();
             result.add(followDto);
@@ -78,18 +82,20 @@ public class FollowService {
 
     }
 
-    public List<FollowDto> getFollowingList(String userEmail){
+    public List<FollowDto> getFollowingList(String profileEmail,String userEmail){
         List<FollowDto> result = new ArrayList<>();
-        List<Follow> findFollows = followRepository.findByFollowingEmail(userEmail);
+        List<Follow> findFollows = followRepository.findByFollowingEmail(profileEmail);
+        List<Follow> userFollows = followRepository.findByFollowingEmail(userEmail);
 
         for (Follow findFollow: findFollows) {
+            boolean state = userFollows.stream().anyMatch(userFollow -> findFollow.getFollowedUser().getEmail().equals(userFollow.getFollowedUser().getEmail()));
             FollowDto followDto = FollowDto.builder()
                     .id(findFollow.getFollowedUser().getId())
                     .profileImgUrl(findFollow.getFollowedUser().getProfileImgUrl())
                     .email(findFollow.getFollowedUser().getEmail())
                     .name(findFollow.getFollowedUser().getName())
-                    .followState(findFollow.isBidirectional())
-                    .loginUser(userEmail.equals(findFollow.getFollowingUser().getEmail()))
+                    .followState(state)
+                    .loginUser(userEmail.equals(findFollow.getFollowedUser().getEmail()))
                     .build();
             result.add(followDto);
 
@@ -102,16 +108,7 @@ public class FollowService {
     @Transactional
     public void unFollow(String followingEmail, String followedEmail){
         List<Follow> findFollows = followRepository.findByFollowingEmail(followingEmail);
-        for (Follow findFollow : findFollows) {
-            if (findFollow.getFollowedUser().getEmail().equals(followedEmail)) {
-                if (findFollow.isBidirectional()){
-                    Optional<Follow> find = followRepository.findByFollowingEmailAndFollowerEmail(followedEmail, followingEmail);
-                    find.get().setBidirectional(false);
-                }
-                followRepository.delete(findFollow);
-                break;
-            }
-        }
+        findFollows.stream().filter(findFollow -> findFollow.getFollowedUser().getEmail().equals(followedEmail)).findFirst().ifPresent(followRepository::delete);
     }
 
 }

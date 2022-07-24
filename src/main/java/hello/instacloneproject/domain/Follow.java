@@ -23,13 +23,11 @@ public class Follow {
     @ManyToOne
     private User followedUser;
 
-    private boolean bidirectional;
 
     @Builder
-    public Follow(User followingUser, User followedUser,boolean bidirectional) {
+    public Follow(User followingUser, User followedUser) {
         this.followingUser = followingUser;
         this.followedUser = followedUser;
-        this.bidirectional = bidirectional;
     }
 
 }

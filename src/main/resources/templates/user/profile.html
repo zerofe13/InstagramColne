@@ -36,8 +36,8 @@
                 <div class="subscribe">
                     <ul>
                         <li>게시물<span th:text="${userProfile.postCount}" ></span></li>
-                        <li><a class="follow" th:onclick="|followerInfoModalOpen(${userProfile.user.id})|" style="text-decoration:none">팔로워 </a><span th:text="${userProfile.followerCount}" ></span>
-                        <li><a class="follow" th:onclick="|followingInfoModalOpen(${userProfile.user.id})|" style="text-decoration:none">팔로잉 </a><span th:text="${userProfile.followingCount}" ></span>
+                        <li><a class="follow" th:onclick="followerInfoModalOpen([[${userProfile.user.email}]])" style="text-decoration:none">팔로워 </a><span th:text="${userProfile.followerCount}" ></span>
+                        <li><a class="follow" th:onclick="followingInfoModalOpen([[${userProfile.user.email}]])" style="text-decoration:none">팔로잉 </a><span th:text="${userProfile.followingCount}" ></span>
                     </ul>
                 </div>
                 <div class="state">

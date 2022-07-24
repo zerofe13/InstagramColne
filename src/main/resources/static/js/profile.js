@@ -25,11 +25,11 @@ function toggleSubscribe(followedEmail, obj) {
     }
 }
 
-function followerInfoModalOpen(profileId) {
+function followerInfoModalOpen(profileEmail) {
     $(".modal-follower").css("display", "flex");
 
     $.ajax({
-        url: `/api/follow/${profileId}/follower`,
+        url: `/api/follow/${profileEmail}/follower`,
         dataType: "json"
     }).done(res => {
         console.log(res.toString());
@@ -42,11 +42,11 @@ function followerInfoModalOpen(profileId) {
         console.log("구독정보 불러오기 오류", error);
     });
 }
-function followingInfoModalOpen(profileId) {
+function followingInfoModalOpen(profileEmail) {
     $(".modal-following").css("display", "flex");
 
     $.ajax({
-        url: `/api/follow/${profileId}/following`,
+        url: `/api/follow/${profileEmail}/following`,
         dataType: "json"
     }).done(res => {
         console.log(res.toString());
