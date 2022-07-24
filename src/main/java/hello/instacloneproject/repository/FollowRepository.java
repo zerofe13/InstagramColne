@@ -8,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import javax.persistence.EntityManager;
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
@@ -37,9 +38,12 @@ public class FollowRepository {
 
     }
 
-//    public Follow findByFollowingIdAndFollowerId(long followingId,long followerId){
-//        em.createQuery("select f from Follow f ")
-//    }
+    public Optional<Follow> findByFollowingEmailAndFollowerEmail(String followingEmail,String followerEmail){
+        return em.createQuery("select f from Follow f where f.followedUser.email =:followerEamil and f.followingUser.email =:followingEmail")
+                .setParameter("followerEamil",followerEmail)
+                .setParameter("followingEmail",followingEmail)
+                .getResultList().stream().findFirst();
+    }
 
     public void delete(Follow follow){
         em.remove(follow);
