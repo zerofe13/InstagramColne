@@ -4,23 +4,30 @@ import hello.instacloneproject.domain.User;
 import hello.instacloneproject.dto.user.UserProfileDto;
 import hello.instacloneproject.dto.user.UserSignupDto;
 import hello.instacloneproject.dto.user.UserUpdateDto;
+import hello.instacloneproject.file.FileStore;
 import hello.instacloneproject.service.FollowService;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import java.io.IOException;
+import java.net.MalformedURLException;
 
 @Controller
 @RequiredArgsConstructor
 
 public class UserController {
+
     private final UserService userService;
     private final FollowService followService;
+    private final FileStore fileStore;
 
     @GetMapping("/login")
     public String login(){
@@ -34,7 +41,7 @@ public class UserController {
     }
 
     @PostMapping("/signup")
-    public String signup(UserSignupDto userLoginDto){
+    public String signup(@ModelAttribute UserSignupDto userLoginDto){
         userService.join(userLoginDto);
         return "redirect:/login";
     }
@@ -47,12 +54,17 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String update(UserUpdateDto userUpdateDto, RedirectAttributes redirect){
+    public String update(@ModelAttribute UserUpdateDto userUpdateDto, RedirectAttributes redirect) throws IOException {
         userService.update(userUpdateDto);
         redirect.addAttribute("profileEmail",userUpdateDto.getEmail());
         return "redirect:/user/profile";
     }
-
+    //<Img>태그로 이미지를 조회할때 사용
+    @ResponseBody
+    @GetMapping("/image/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:"+fileStore.getFullPath(filename));
+    }
     @GetMapping("/user/profile")
     public String profile(@AuthenticationPrincipal User user, @RequestParam(required = false) String profileEmail, Model model){
         User findUser = userService.findByEmail(user.getEmail());

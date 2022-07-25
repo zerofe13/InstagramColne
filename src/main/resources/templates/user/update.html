@@ -12,7 +12,7 @@
             <!--프로필셋팅 아이디영역-->
             <div class="content-item__01">
                 <div class="item__img">
-                    <img th:src="@{${'/profile_imgs/' + user.getProfileImgUrl()}}" onerror="this.src='/img/default_profile.jpg';"/>
+                    <img th:src="@{${'/file/' + user.getProfileImgFile()?.getStoreFileName()}}" onerror="this.src='/img/default_profile.jpg';"/>
                 </div>
                 <div class="item__username">
                     <h2 th:text="${user.getName()}" ></h2>
@@ -32,8 +32,7 @@
                 <div class="content-item__02">
                     <div class="item__title">프로필 사진</div>
                     <div class="item__input">
-<!--todo 이미지 기능 추가 후 type 변경-->
-                        <input class="input_update" type="text" name="profileImgUrl" id="profileImgUrl">
+                        <input class="input_update" type="file" name="profileImgFile" id="profileImgFile">
                     </div>
                 </div>
                 <div class="content-item__03">

@@ -25,7 +25,8 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     private String phone;
     private String name;
 
-    private String profileImgUrl;
+    @Embedded
+    private UploadFile profileImgFile;
 
     private String title;
     private  String website;
@@ -35,13 +36,13 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     private List<Post> postList = new ArrayList<>();
 
     @Builder
-    public User(long id, String email, String password, String phone, String name, String profileImgUrl, String title, String website) {
+    public User(long id, String email, String password, String phone, String name,UploadFile profileImgFile, String title, String website) {
         this.id = id;
         this.email = email;
         this.password = password;
         this.phone = phone;
         this.name = name;
-        this.profileImgUrl = profileImgUrl;
+        this.profileImgFile = profileImgFile;
         this.title = title;
         this.website = website;
     }

@@ -19,3 +19,7 @@ spring:
 logging.level:
     org.hibernate.SQL: debug
 #   org.hibernate.type: trace
+
+
+#파일경로
+file.dir: '/Users/youngcheolseo/Desktop/Spring_study/file/'

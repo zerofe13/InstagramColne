@@ -68,7 +68,7 @@ public class FollowService {
 
             FollowDto followDto = FollowDto.builder()
                     .id(findFollow.getFollowingUser().getId())
-                    .profileImgUrl(findFollow.getFollowingUser().getProfileImgUrl())
+                    .profileFile(findFollow.getFollowingUser().getProfileImgFile())
                     .email(findFollow.getFollowingUser().getEmail())
                     .name(findFollow.getFollowingUser().getName())
                     .followState(state)
@@ -91,7 +91,7 @@ public class FollowService {
             boolean state = userFollows.stream().anyMatch(userFollow -> findFollow.getFollowedUser().getEmail().equals(userFollow.getFollowedUser().getEmail()));
             FollowDto followDto = FollowDto.builder()
                     .id(findFollow.getFollowedUser().getId())
-                    .profileImgUrl(findFollow.getFollowedUser().getProfileImgUrl())
+                    .profileFile(findFollow.getFollowingUser().getProfileImgFile())
                     .email(findFollow.getFollowedUser().getEmail())
                     .name(findFollow.getFollowedUser().getName())
                     .followState(state)

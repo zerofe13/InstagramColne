@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -102,7 +103,7 @@ class UserAndFollowServiceTest {
     }
 
     @Test
-    void update(){
+    void update() throws IOException {
         //given
         Optional<User> findUser = userRepository.findByEmail("d@d.com");
         UserUpdateDto updateDto = UserUpdateDto.builder()
