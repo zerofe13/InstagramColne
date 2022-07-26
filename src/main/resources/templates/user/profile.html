@@ -49,25 +49,25 @@
         </div>
     </section>
     <!--게시물컨섹션-->
-<!--    <section id="tab-content">-->
-<!--        &lt;!&ndash;게시물컨컨테이너&ndash;&gt;-->
-<!--        <div class="profileContainer">-->
-<!--            &lt;!&ndash;그냥 감싸는 div (지우면이미지커짐)&ndash;&gt;-->
-<!--            <div id="tab-1-content" class="tab-content-item show">-->
-<!--                &lt;!&ndash;게시물컨 그리드배열&ndash;&gt;-->
-<!--                <div class="tab-1-content-inner" id="img-box" >-->
-<!--                    &lt;!&ndash;아이템들&ndash;&gt;-->
-<!--                    <div class="img-box" th:each="post : ${userProfile.user.postList}" th:onclick="|postPopup(${post.id}, '.modal-post')|">-->
-<!--                        <img th:src="@{${'/upload/' + post.postImgUrl}}" />-->
-<!--                        <div class="comment">-->
+    <section id="tab-content">
+        <!--게시물컨컨테이너-->
+        <div class="profileContainer">
+            <!--그냥 감싸는 div (지우면이미지커짐)-->
+            <div id="tab-1-content" class="tab-content-item show">
+                <!--게시물컨 그리드배열-->
+                <div class="tab-1-content-inner" id="img-box" >
+                    <!--아이템들-->
+                    <div class="img-box" th:each="post : ${userProfile.user.postList}" th:onclick="|postPopup(${post.id}, '.modal-post')|">
+                        <img th:src="|/image/${post.postImgFile.storeFileName}|" />
+                        <div class="comment">
 <!--                            <a> <i class="fas fa-heart"></i><span th:text="${post.likesCount}"></span></a>-->
-<!--                        </div>-->
-<!--                    </div>-->
-<!--                    &lt;!&ndash;아이템들end&ndash;&gt;-->
-<!--                </div>-->
-<!--            </div>-->
-<!--        </div>-->
-<!--    </section>-->
+                        </div>
+                    </div>
+                    <!--아이템들end-->
+                </div>
+            </div>
+        </div>
+    </section>
 
     <!--로그아웃, 회원정보변경 모달-->
     <div class="modal-info">

@@ -62,6 +62,14 @@ public class UserService {
         return userRepository.findById(id);
     }
 
+    public User findByIdWithPostList(Long id ){
+        return userRepository.findByIdWithPost(id).get();
+    }
+
+    public User findByEmailWithPostList(String email){
+        return userRepository.findByEmailWithPost(email);
+    }
+
     private void validateDuplicateUser(UserSignupDto userLoginDto) {
         Optional<User> findUser = userRepository.findByEmail(userLoginDto.getEmail());
         if(findUser.isPresent()){

@@ -14,7 +14,6 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
@@ -59,15 +58,10 @@ public class UserController {
         redirect.addAttribute("profileEmail",userUpdateDto.getEmail());
         return "redirect:/user/profile";
     }
-    //<Img>태그로 이미지를 조회할때 사용
-    @ResponseBody
-    @GetMapping("/image/{filename}")
-    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
-        return new UrlResource("file:"+fileStore.getFullPath(filename));
-    }
+
     @GetMapping("/user/profile")
     public String profile(@AuthenticationPrincipal User user, @RequestParam(required = false) String profileEmail, Model model){
-        User findUser = userService.findByEmail(user.getEmail());
+        User findUser = userService.findByEmailWithPostList(user.getEmail());
         if(profileEmail == null){
             UserProfileDto userProfile = getUserProfile(findUser.getEmail(), findUser);
             model.addAttribute("user",findUser);
@@ -80,15 +74,22 @@ public class UserController {
         return "user/profile";
     }
 
+
+    //<Img>태그로 이미지를 조회할때 사용
+    @ResponseBody
+    @GetMapping("/image/{filename}")
+    public Resource downloadImage(@PathVariable String filename) throws MalformedURLException {
+        return new UrlResource("file:"+fileStore.getFullPath(filename));
+    }
     private UserProfileDto getUserProfile(String profileEmail, User loginUser){
-        User profileUser = userService.findByEmail(profileEmail);
+        User profileUser = userService.findByEmailWithPostList(profileEmail);
         return UserProfileDto.builder()
                 .user(profileUser)
                 .loginUser(profileUser.getId()==loginUser.getId())
                 .follow(followService.checkFollow(loginUser.getEmail(),profileEmail))
                 .followerCount(followService.countFollower(profileEmail))
                 .followingCount(followService.countFollowing(profileEmail))
-                .postCount(0)
+                .postCount(profileUser.getPostList().size())
                 .build();
 
     }
