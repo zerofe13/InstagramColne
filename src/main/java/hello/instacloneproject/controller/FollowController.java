@@ -3,6 +3,7 @@ package hello.instacloneproject.controller;
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.dto.Follow.FollowDto;
 import hello.instacloneproject.service.FollowService;
+import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -18,15 +19,19 @@ import java.util.List;
 public class FollowController {
 
     private final FollowService followService;
+    private final UserService userService;
 
-    @PostMapping("/follow/{followedEmail}")
-    public void following(@PathVariable String followedEmail, @AuthenticationPrincipal User user){
-        followService.save(user.getEmail(),followedEmail);
+
+    @PostMapping("/follow/{followedId}")
+    public void following(@PathVariable Long followedId, @AuthenticationPrincipal User user){
+        User findUser = userService.findById(followedId);
+        followService.save(user.getEmail(), findUser.getEmail());
     }
 
-    @DeleteMapping("/follow/{followedEmail}")
-    public void unfollowing(@PathVariable String followedEmail,@AuthenticationPrincipal User user){
-        followService.unFollow(user.getEmail(), followedEmail);
+    @DeleteMapping("/follow/{followedId}")
+    public void unfollowing(@PathVariable Long followedId,@AuthenticationPrincipal User user){
+        User findUser = userService.findById(followedId);
+        followService.unFollow(user.getEmail(), findUser.getEmail());
     }
 
     /**

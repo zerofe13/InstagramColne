@@ -1,10 +1,9 @@
 
-function toggleSubscribe(followedEmail, obj) {
+function toggleSubscribe(toUserId, obj) {
     if ($(obj).text() === "언팔로우") {
         $.ajax({
             type: "delete",
-            url: "/api/follow/" + followedEmail,
-            dataType: "text"
+            url: "/api/follow/" + toUserId,
         }).done(res => {
             $(obj).text("팔로우");
             $(obj).toggleClass("blue");
@@ -14,8 +13,7 @@ function toggleSubscribe(followedEmail, obj) {
     } else {
         $.ajax({
             type: "post",
-            url: "/api/follow/" + followedEmail,
-            dataType: "text"
+            url: "/api/follow/" + toUserId,
         }).done(res => {
             $(obj).text("언팔로우");
             $(obj).toggleClass("blue");
@@ -60,9 +58,9 @@ function followingInfoModalOpen(profileEmail) {
     });
 }
 function getfollowModalItem(follow) {
-    let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.id}">
+    let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.email}">
 	<div class="subscribe__img">
-		<img src="${follow.profileImgUrl}" />
+	<a href="/user/profile?profileEmail=${follow.email}" ><img src=""/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg';" /></a>
 	</div>
 	<div class="subscribe__text">
 		<h2>${follow.name}</h2>
@@ -72,14 +70,13 @@ function getfollowModalItem(follow) {
         if(follow.followState){
             item += `<button class="cta-follow blue" onclick="toggleSubscribe(${follow.id}, this)">언팔로우</button>`;
         }else{
-            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id}, this)">팔로우</button>`;
+            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id},this)">팔로우</button>`;
         }
     }
     item += `
 	</div>
 </div>`;
 
-    console.log(item);
     return item;
 }
 

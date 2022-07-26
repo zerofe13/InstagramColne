@@ -15,7 +15,7 @@ public class FollowDto {
     private long id;
     private String email;
     private String name;
-    private UploadFile profileFile;
+    private UploadFile profileImgFile;
     private boolean followState;
     private boolean loginUser;
 }

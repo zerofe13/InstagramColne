@@ -26,8 +26,8 @@
                     <button class="cta" th:if="${userProfile.loginUser}" onclick="location.href='/post/upload'">사진등록</button>
                     <span></span>
 <!--                    Todo-->
-                    <button class="cta" th:if="!${userProfile.loginUser} and !${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.email}]], this)">팔로우</button>
-                    <button class="cta" th:if="!${userProfile.loginUser} and ${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.email}]], this)">언팔로우</button>
+                    <button class="cta" th:if="!${userProfile.loginUser} and !${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.id}]], this)">팔로우</button>
+                    <button class="cta" th:if="!${userProfile.loginUser} and ${userProfile.follow}" th:onclick="toggleSubscribe([[${userProfile.user.id}]], this)">언팔로우</button>
                     <button class="modi" th:if="${userProfile.loginUser}" onclick="popup('.modal-info')">
                         <i class="fas fa-cog"></i>
                     </button>
