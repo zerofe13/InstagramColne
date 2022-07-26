@@ -60,7 +60,7 @@ function followingInfoModalOpen(profileEmail) {
 function getfollowModalItem(follow) {
     let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.email}">
 	<div class="subscribe__img">
-	<a href="/user/profile?profileEmail=${follow.email}" ><img src=""/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg';" /></a>
+	<a href="/user/profile?profileEmail=${follow.email}" ><img src="/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'; /></a>
 	</div>
 	<div class="subscribe__text">
 		<h2>${follow.name}</h2>
@@ -126,7 +126,7 @@ function postPopup(postId, obj) {
 function getPostModalInfo(postInfoDto) {
     let item = `
     <div class="subscribe-header">
-            <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
+            <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/image/${postInfoDto.postUploader.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'"></a>  
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
@@ -136,17 +136,19 @@ function getPostModalInfo(postInfoDto) {
     </div>
     <div class="post-box">
 	    <div class="subscribe__img">
-		    <img src="/upload/${postInfoDto.postImgUrl}" />
+		    <img src="/image/${postInfoDto.postImgUrl}" />
 	    </div>
 	    <div class="post-div">
 	    <div class="post-info">
 	        <div class="text"> `;
-    if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
-    } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
-    }
-    item += `
+    // if(postInfoDto.likeState) {
+    //     item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+    // } else {
+    //     item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+    // }
+    // item += `
+    // `삭제 해야함
+    `
             </div>
 	        <div class="text">
 	            <span>${postInfoDto.text}</span>
@@ -161,20 +163,22 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.createdate.toLocaleString()}</span>
+            <span>${postInfoDto.dateTime.toLocaleString()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
-    postInfoDto.commentList.forEach((comment)=>{
-        item += `<li id="storyCommentItem-${comment.id}">
-                               <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
-        if(principalId == comment.user.id) {
-            item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-                                                <i class="fas fa-times"></i>
-                                            </button>`;
-        }
-        item += `</li>`});
-    item += `
+    // postInfoDto.commentList.forEach((comment)=>{
+    //     item += `<li id="storyCommentItem-${comment.id}">
+    //                            <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
+    //     if(principalId == comment.user.id) {
+    //         item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+    //                                             <i class="fas fa-times"></i>
+    //                                         </button>`;
+    //     }
+    //     item += `</li>`});
+    // item += `
+    // `삭제 해야함
+        `
                 </ul>
             </div>
             </div>
