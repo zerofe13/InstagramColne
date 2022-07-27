@@ -1,18 +1,16 @@
 package hello.instacloneproject.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
 public class Follow {
     @Id
     @GeneratedValue
+    @Column(name = "follow_id")
     private long id;
 
     @JoinColumn(name = "following_user_id")

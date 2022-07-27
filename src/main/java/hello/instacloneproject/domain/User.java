@@ -1,5 +1,6 @@
 package hello.instacloneproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -12,7 +13,7 @@ import java.util.List;
 
 @Entity
 @Getter @Setter
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_TABLE")
 public class User implements UserDetails { // 스프링 시큐리티를 위해 UserDetails 구현
 
@@ -31,8 +32,8 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     private String title;
     private  String website;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "user")
-    @JsonIgnoreProperties({"user"})
     private List<Post> postList = new ArrayList<>();
 
     @Builder

@@ -1,15 +1,12 @@
 package hello.instacloneproject.domain;
 
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter @Setter
 public class Post {
 
@@ -22,8 +19,6 @@ public class Post {
 
     private String tag;
     private String text;
-
-
 
     private LocalDateTime dateTime;
 

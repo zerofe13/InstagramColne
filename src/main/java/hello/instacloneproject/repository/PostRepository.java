@@ -15,8 +15,10 @@ public class PostRepository {
         em.persist(post);
     }
 
-    public Post findById(Long id){
-        return em.find(Post.class,id);
+    public Post findById(Long postId){
+        return em.createQuery("select p from Post p join fetch p.user where p.id =:postId",Post.class)
+                .setParameter("postId",postId)
+                .getSingleResult();
     }
 
     public void delete(Post post){

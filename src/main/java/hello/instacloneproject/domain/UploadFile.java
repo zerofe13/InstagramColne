@@ -1,14 +1,15 @@
 package hello.instacloneproject.domain;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
-@NoArgsConstructor
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
-public class UploadFile {
+public class UploadFile  {
 
     private String uploadFileName;
     private String storeFileName;
