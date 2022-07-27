@@ -21,6 +21,12 @@ public class PostRepository {
                 .getSingleResult();
     }
 
+    public Post findByIdWithLikesList(Long postId){
+        return em.createQuery("select p from Post p left join fetch p.user left join fetch p.likeList where p.id =:postId",Post.class)
+                .setParameter("postId",postId)
+                .getSingleResult();
+    }
+
     public void delete(Post post){
         em.remove(post);
     }

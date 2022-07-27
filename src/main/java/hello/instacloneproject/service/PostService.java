@@ -66,7 +66,11 @@ public class PostService {
                 .postImgFile(findPost.getPostImgFile())
                 .build();
     }
-    public Post findById(Long id){
+    public Post findById(long id){
         return postRepository.findById(id);
+    }
+
+    public Post findByIdWithLike(long id){
+        return postRepository.findByIdWithLikesList(id);
     }
 }

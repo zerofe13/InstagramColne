@@ -141,14 +141,12 @@ function getPostModalInfo(postInfoDto) {
 	    <div class="post-div">
 	    <div class="post-info">
 	        <div class="text"> `;
-    // if(postInfoDto.likeState) {
-    //     item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
-    // } else {
-    //     item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
-    // }
-    // item += `
-    // `삭제 해야함
-    `
+    if(postInfoDto.likeState) {
+        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+    } else {
+        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+    }
+    item += `
             </div>
 	        <div class="text">
 	            <span>${postInfoDto.text}</span>

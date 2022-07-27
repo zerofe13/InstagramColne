@@ -14,7 +14,6 @@ public class UserProfileDto {
     private boolean follow;
     private int followerCount;
     private int followingCount;
-
     private int postCount;
 
 

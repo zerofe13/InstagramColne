@@ -1,9 +1,12 @@
 package hello.instacloneproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,6 +29,10 @@ public class Post {
     @JoinColumn(name="user_id")
     private User user;
 
+    @OneToMany(mappedBy = "post")
+    @JsonIgnoreProperties({"post"})
+    private List<Likes> likeList=new ArrayList<>();
+
     public void setPostImgFile(UploadFile postImgFile) {
         this.postImgFile = postImgFile;
     }
@@ -38,7 +45,7 @@ public class Post {
         setUser(user);
     }
     // 연관관계 메서드
-    public void setUser(User user){
+    private void setUser(User user){
         this.user = user;
         user.getPostList().add(this);
     }

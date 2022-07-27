@@ -6,6 +6,7 @@ import hello.instacloneproject.dto.Post.PostDto;
 import hello.instacloneproject.dto.Post.PostInfoDto;
 import hello.instacloneproject.dto.Post.PostUpdateDto;
 import hello.instacloneproject.dto.Post.PostUploadDto;
+import hello.instacloneproject.service.LikesService;
 import hello.instacloneproject.service.PostService;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,7 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
+    private final LikesService likesService;
 
     @GetMapping("/post/story")
     public String test(Model model, @AuthenticationPrincipal User user){
@@ -70,18 +72,4 @@ public class PostController {
         return "redirect:/user/profile";
     }
 
-    @ResponseBody
-    @GetMapping("/api/post/{postId}")
-    public PostInfoDto getPostInfo(@PathVariable long postId, @AuthenticationPrincipal User user){
-        Post findPost = postService.findById(postId);
-        return PostInfoDto.builder()
-                .id(findPost.getId())
-                .postImgUrl(findPost.getPostImgFile().getStoreFileName())
-                .dateTime(findPost.getDateTime())
-                .tag(findPost.getTag())
-                .text(findPost.getText())
-                .postUploader(findPost.getUser())
-                .uploader(findPost.getUser().getEmail().equals(user.getEmail()))
-                .build();
-    }
 }
