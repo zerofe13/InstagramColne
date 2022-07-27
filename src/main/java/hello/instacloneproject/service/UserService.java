@@ -25,7 +25,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final FileStore fileStore;
 
-    @Value("@{file.dir}")
+    @Value("${file.dir}")
     private String fileDir;
     @Transactional
     public void join(UserSignupDto userLoginDto){

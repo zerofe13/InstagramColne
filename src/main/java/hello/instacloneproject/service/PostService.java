@@ -29,7 +29,7 @@ public class PostService {
     private final UserRepository userRepository;
     private final FileStore fileStore;
 
-    @Value("@{file.dir}")
+    @Value("${file.dir}")
     private String fileDir;
 
     @Transactional
