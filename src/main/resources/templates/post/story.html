@@ -15,7 +15,7 @@
     <div class="main-right">
         <div class="myProfile">
             <a th:href="@{/user/profile(id=${user.getId()})}" >
-                <img class="pic" th:src="@{${'/profile_imgs/' + user?.getProfileImgUrl()}}" onerror="this.src='/img/default_profile.jpg'; "/>
+                <img class="pic" th:src="|/image/${user.profileImgFile?.storeFileName}|" onerror="this.src='/img/default_profile.jpg'; "/>
             </a>
             <div>
                 <span class="userID point-span" th:text="${user.getName()}"></span>
@@ -25,5 +25,12 @@
     </div>
 </main>
 <footer th:replace="layout/common :: footer('footer')"></footer>
+<!--<script th:inline="javascript">-->
+<!--    let principalId = /*[[${user.id}]]*/-->
+<!--    /*[/]*/-->
+<!--</script>-->
+<script src="/js/story.js">
+    storyLoad();
+</script>
 </body>
 </html>

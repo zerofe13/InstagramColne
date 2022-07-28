@@ -7,6 +7,9 @@ import hello.instacloneproject.service.LikesService;
 import hello.instacloneproject.service.PostService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -45,4 +48,11 @@ public class PostApiController {
     public void unlikes(@PathVariable long postId,@AuthenticationPrincipal User user){
         likesService.unlike(postId,user.getEmail());
     }
+
+    @GetMapping("/post")
+    public Page<PostInfoDto> Story(@AuthenticationPrincipal User user, @PageableDefault(size=3)Pageable pageable){
+        return postService.getStory(user.getEmail(),pageable);
+    }
+
+
 }

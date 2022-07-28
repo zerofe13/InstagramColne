@@ -60,7 +60,9 @@ function followingInfoModalOpen(profileEmail) {
 function getfollowModalItem(follow) {
     let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.email}">
 	<div class="subscribe__img">
-	<a href="/user/profile?profileEmail=${follow.email}" ><img src="/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'; /></a>
+	    <a href="/user/profile?profileEmail=${follow.email}" >
+	        <img src="/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg';"/>
+    </a>
 	</div>
 	<div class="subscribe__text">
 		<h2>${follow.name}</h2>

@@ -72,4 +72,5 @@ public class PostController {
         return "redirect:/user/profile";
     }
 
+
 }

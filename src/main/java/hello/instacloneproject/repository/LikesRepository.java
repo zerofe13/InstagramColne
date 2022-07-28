@@ -31,6 +31,12 @@ public class LikesRepository {
                 .getResultList();
     }
 
+    public List<Likes> CountByPostId(Long postId){
+        return em.createQuery("select count (l) from Likes l join fetch l.post join fetch l.user where l.post.id =:postId",Likes.class)
+                .setParameter("postId",postId)
+                .getResultList();
+    }
+
     public List<Likes> findByUserId(String userEmail){
         return em.createQuery("select l from Likes l join fetch l.post join fetch l.user where l.user.email =:userEmail",Likes.class)
                 .setParameter("userEmail",userEmail)
