@@ -88,6 +88,7 @@ public class PostService {
         List<PostInfoDto> result = new ArrayList<>();
 
         for(Post story:storyList){
+            List<Likes> findLikes = likesRepository.findByPostId(story.getId());
             boolean state = likesRepository.findByPostIdAndUserEmail(story.getId(), userEmail).isPresent();
             PostInfoDto dto = PostInfoDto.builder()
                     .id(story.getId())
@@ -97,7 +98,7 @@ public class PostService {
                     .text(story.getText())
                     .postUploader(story.getUser())
                     .uploader(story.getUser().getEmail().equals(userEmail))
-                    .likeCount(story.getLikeList().size())
+                    .likeCount(findLikes.size())
                     .likeState(state)
                     .build();
             result.add(dto);
