@@ -1,5 +1,6 @@
 package hello.instacloneproject.dto.Post;
 
+import hello.instacloneproject.domain.Comment;
 import hello.instacloneproject.domain.UploadFile;
 import hello.instacloneproject.domain.User;
 import lombok.AllArgsConstructor;
@@ -8,6 +9,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Builder
 @Data
@@ -24,4 +26,5 @@ public class PostInfoDto {
     private String postImgUrl;
     private int likeCount;
     private boolean likeState;
+    private List<Comment> commentList;
 }

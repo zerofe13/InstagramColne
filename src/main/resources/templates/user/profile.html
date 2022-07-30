@@ -60,7 +60,7 @@
                     <div class="img-box" th:each="post : ${userProfile.user.postList}" th:onclick="|postPopup([[${post.id}]], '.modal-post')|">
                         <img th:src="|/image/${post.postImgFile.storeFileName}|" />
                         <div class="comment">
-<!--                            <a> <i class="fas fa-heart"></i><span th:text="${post.likesCount}"></span></a>-->
+<!--                            <a> <i class="fas fa-heart"></i><span th:text="${post.likeCount}"></span></a>-->
                         </div>
                     </div>
                     <!--아이템들end-->
@@ -122,6 +122,11 @@
     </div>
     <footer th:replace="layout/common :: footer('footer')"></footer>
 </main>
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let principalId = [[${user.id}]];
+    /*]]>*/
+</script>
 <script src="/js/profile.js">
 </script>
 </body>

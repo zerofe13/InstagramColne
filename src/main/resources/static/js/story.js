@@ -33,9 +33,9 @@ function getStoryItem(post) {
             <div class="icons-react">
                 <div class="icons-left">`;
     if(post.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+        item += `<i class="fas fa-heart active" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likeCount}</i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likesCount}</i>`;
+        item += `<i class="far fa-heart" id="storyLikeIcon-${post.id}" onclick="toggleLike(${post.id})">${post.likeCount}</i>`;
     }
     item += `
                 </div>
@@ -58,15 +58,15 @@ function getStoryItem(post) {
                 <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${post.id}">`;
 
-    // post.commentList.forEach((comment)=>{
-    //     item += `<li id="storyCommentItem-${comment.id}">
-    //                             <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
-    //     if(principalId == comment.user.id) {
-    //         item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-    //                                             <i class="fas fa-times"></i>
-    //                                         </button>`;
-    //     }
-    //     item += `</li>`});
+    post.commentList.forEach((comment)=>{
+        item += `<li id="storyCommentItem-${comment.id}">
+                                <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
+        if(principalId == comment.user.id) {
+            item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                                                <i class="fas fa-times"></i>
+                                            </button>`;
+        }
+        item += `</li>`});
     item += `
                 </ul>
                 </div>

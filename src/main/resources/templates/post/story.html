@@ -25,10 +25,11 @@
     </div>
 </main>
 <footer th:replace="layout/common :: footer('footer')"></footer>
-<!--<script th:inline="javascript">-->
-<!--    let principalId = /*[[${user.id}]]*/-->
-<!--    /*[/]*/-->
-<!--</script>-->
+<script th:inline="javascript">
+    /*<![CDATA[*/
+    let principalId = [[${user.id}]];
+    /*]]>*/
+</script>
 <script src="/js/story.js">
     storyLoad();
 </script>

@@ -1,5 +1,6 @@
 package hello.instacloneproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
@@ -29,13 +30,13 @@ public class Post {
     @JoinColumn(name="user_id")
     private User user;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "post")
-    @JsonIgnoreProperties({"post"})
     private List<Likes> likeList=new ArrayList<>();
 
-    public void setPostImgFile(UploadFile postImgFile) {
-        this.postImgFile = postImgFile;
-    }
+    @JsonIgnore
+    @OneToMany(mappedBy = "post")
+    private List<Comment> commentList =new ArrayList<>();
 
     @Builder
     public Post(UploadFile postImgFile, String tag, String text,User user) {

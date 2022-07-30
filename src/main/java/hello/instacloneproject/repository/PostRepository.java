@@ -31,6 +31,10 @@ public class PostRepository {
                 .getSingleResult();
     }
 
+    /**
+     * 페치조인에 페이징을 사용 할 경우
+     * row에 영향을 주지않는 to one 관계만 먼저 페치조인을 한후 to many 관계인 Likes 나중에 맵핑해줌
+     */
     public List<Post> findStory(String userEmail, Pageable pageable){
         return em.createQuery("select p from Post p" +
                         " join fetch p.user where p.user in (select f.followedUser from Follow f where f.followingUser.email =:userEmail) order by p.dateTime DESC ", Post.class)

@@ -1,9 +1,6 @@
 package hello.instacloneproject.service;
 
-import hello.instacloneproject.domain.Likes;
-import hello.instacloneproject.domain.Post;
-import hello.instacloneproject.domain.UploadFile;
-import hello.instacloneproject.domain.User;
+import hello.instacloneproject.domain.*;
 import hello.instacloneproject.dto.Post.PostDto;
 import hello.instacloneproject.dto.Post.PostInfoDto;
 import hello.instacloneproject.dto.Post.PostUpdateDto;
@@ -36,6 +33,7 @@ public class PostService {
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final LikesRepository likesRepository;
+    private final CommentService commentService;
     private final FileStore fileStore;
 
     @Value("${file.dir}")
@@ -90,6 +88,7 @@ public class PostService {
         for(Post story:storyList){
             List<Likes> findLikes = likesRepository.findByPostId(story.getId());
             boolean state = likesRepository.findByPostIdAndUserEmail(story.getId(), userEmail).isPresent();
+            List<Comment> commentList = commentService.getPostComments(story.getId());
             PostInfoDto dto = PostInfoDto.builder()
                     .id(story.getId())
                     .postImgUrl(story.getPostImgFile().getStoreFileName())
@@ -100,6 +99,7 @@ public class PostService {
                     .uploader(story.getUser().getEmail().equals(userEmail))
                     .likeCount(findLikes.size())
                     .likeState(state)
+                    .commentList(commentList)
                     .build();
             result.add(dto);
         }

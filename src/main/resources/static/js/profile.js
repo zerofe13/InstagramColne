@@ -167,18 +167,16 @@ function getPostModalInfo(postInfoDto) {
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
-    // postInfoDto.commentList.forEach((comment)=>{
-    //     item += `<li id="storyCommentItem-${comment.id}">
-    //                            <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
-    //     if(principalId == comment.user.id) {
-    //         item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
-    //                                             <i class="fas fa-times"></i>
-    //                                         </button>`;
-    //     }
-    //     item += `</li>`});
-    // item += `
-    // `삭제 해야함
-        `
+    postInfoDto.commentList.forEach((comment)=>{
+        item += `<li id="storyCommentItem-${comment.id}">
+                               <span><span class="point-span userID">${comment.user.name}</span>${comment.text}</span>`;
+        if(principalId == comment.user.id) {
+            item += `<button onclick="deleteComment(${comment.id})" class="delete-comment-btn">
+                                                <i class="fas fa-times"></i>
+                                            </button>`;
+        }
+        item += `</li>`});
+    item += `
                 </ul>
             </div>
             </div>

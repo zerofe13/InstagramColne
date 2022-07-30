@@ -36,6 +36,7 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
     @OneToMany(mappedBy = "user")
     private List<Post> postList = new ArrayList<>();
 
+
     @Builder
     public User(long id, String email, String password, String phone, String name,UploadFile profileImgFile, String title, String website) {
         this.id = id;
