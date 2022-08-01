@@ -9,3 +9,5 @@
 - SpringBoot 2.7.2 (Gradle)
 - Jpa (개발단계 h2 사용)
 
+#ER diagram
+![Uploading 스크린샷 2022-08-01 오전 9.31.12.png…]()
