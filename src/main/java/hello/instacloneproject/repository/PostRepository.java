@@ -45,6 +45,20 @@ public class PostRepository {
 
     }
 
+    /**
+     * db에 쉼표로 tag 저장되어 있기때문에
+     * ,를 기준으로 tag를 검색한다.
+     * ex) a,b,c,d
+     */
+    public List<Post> tagSearch(String tag, Pageable pageable){
+        return em.createQuery("select p from Post p join fetch p.user where p.tag like :tag or p.tag like concat('%,',:tag,',%') " +
+                "or p.tag like concat(:tag,',%') or p.tag like concat('%,',:tag) order by p.dateTime desc ",Post.class)
+                .setParameter("tag",tag)
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+    }
+
     public void delete(Post post){
         em.remove(post);
     }

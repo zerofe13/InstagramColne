@@ -28,6 +28,11 @@ public class UserController {
     private final FollowService followService;
     private final FileStore fileStore;
 
+    @GetMapping("/")
+    public String initPage(){
+        return "redirect:/login";
+    }
+
     @GetMapping("/login")
     public String login(){
         return "login";

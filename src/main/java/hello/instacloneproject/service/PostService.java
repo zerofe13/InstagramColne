@@ -83,9 +83,24 @@ public class PostService {
 
     public Page<PostInfoDto> getStory(String userEmail, Pageable pageable){
         List<Post> storyList = postRepository.findStory(userEmail, pageable);
+        List<PostInfoDto> result = getPostInfoDtos(userEmail, storyList);
+        Page<PostInfoDto> page = new PageImpl<>(result);
+        return page;
+    }
+
+
+
+    public Page<PostInfoDto> getTagSearch(String tag,String userEmail,Pageable pageable){
+        List<Post> searchList = postRepository.tagSearch(tag, pageable);
+        List<PostInfoDto> result = getPostInfoDtos(userEmail,searchList);
+        Page<PostInfoDto> page = new PageImpl<>(result);
+        return page;
+    }
+
+    private List<PostInfoDto> getPostInfoDtos(String userEmail, List<Post> storyList) {
         List<PostInfoDto> result = new ArrayList<>();
 
-        for(Post story:storyList){
+        for(Post story: storyList){
             List<Likes> findLikes = likesRepository.findByPostId(story.getId());
             boolean state = likesRepository.findByPostIdAndUserEmail(story.getId(), userEmail).isPresent();
             List<Comment> commentList = commentService.getPostComments(story.getId());
@@ -103,7 +118,6 @@ public class PostService {
                     .build();
             result.add(dto);
         }
-        Page<PostInfoDto> page = new PageImpl<>(result);
-        return page;
+        return result;
     }
 }

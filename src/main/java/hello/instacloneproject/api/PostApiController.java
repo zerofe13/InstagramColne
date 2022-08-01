@@ -61,5 +61,10 @@ public class PostApiController {
         return postService.getStory(user.getEmail(),pageable);
     }
 
+    @GetMapping("/post/search")
+    public Page<PostInfoDto> searchTag(@RequestParam String tag, @AuthenticationPrincipal User user,@PageableDefault(size=3) Pageable pageable){
+        return postService.getTagSearch(tag,user.getEmail(),pageable);
+    }
+
 
 }

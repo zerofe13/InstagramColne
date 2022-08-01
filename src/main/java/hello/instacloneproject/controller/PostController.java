@@ -72,5 +72,18 @@ public class PostController {
         return "redirect:/user/profile";
     }
 
+    @GetMapping("/post/search")
+    public String search(@RequestParam("tag") String tag,@AuthenticationPrincipal User user ,Model model){
+        User findUser = userService.findByEmail(user.getEmail());
+        model.addAttribute("tag",tag);
+        model.addAttribute("user",findUser);
+        return "post/search";
+    }
+
+    @PostMapping("/post/searchForm")
+    public String searchForm(String tag,RedirectAttributes redirect){
+        redirect.addAttribute("tag",tag);
+        return "redirect:/post/search";
+    }
 
 }
