@@ -3,6 +3,7 @@ package hello.instacloneproject.api;
 import hello.instacloneproject.domain.Comment;
 import hello.instacloneproject.domain.Post;
 import hello.instacloneproject.domain.User;
+import hello.instacloneproject.dto.Post.PostDto;
 import hello.instacloneproject.dto.Post.PostInfoDto;
 import hello.instacloneproject.service.CommentService;
 import hello.instacloneproject.service.LikesService;
@@ -66,5 +67,9 @@ public class PostApiController {
         return postService.getTagSearch(tag,user.getEmail(),pageable);
     }
 
+    @GetMapping("/post/likes")
+    public Page<PostDto> getLikesPost(@AuthenticationPrincipal User user,@PageableDefault(size=12) Pageable pageable){
+        return postService.getLikePost(user.getEmail(), pageable);
+    }
 
 }

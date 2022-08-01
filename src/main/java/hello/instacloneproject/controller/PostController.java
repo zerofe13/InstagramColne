@@ -26,13 +26,14 @@ public class PostController {
     private final PostService postService;
     private final LikesService likesService;
 
+    //스토리
     @GetMapping("/post/story")
     public String test(Model model, @AuthenticationPrincipal User user){
         User findUser = userService.findByEmail(user.getEmail());
         model.addAttribute("user",findUser);
         return "post/story";
     }
-
+    //포스트 업로드
     @GetMapping("/post/upload")
     public String upload(@AuthenticationPrincipal User user,Model model){
         User findUser = userService.findByEmail(user.getEmail());
@@ -46,7 +47,7 @@ public class PostController {
         postService.uploadPost(postUploadDto, findUser.getEmail());
         return "redirect:/user/profile";
     }
-
+    //포스트 업데이트
     @GetMapping("/post/update/{postId}")
     public String update(@PathVariable long postId,Model model,@AuthenticationPrincipal User user){
         PostDto findPostDto = postService.getPostDtoById(postId);
@@ -64,14 +65,14 @@ public class PostController {
         redirect.addAttribute("profileEmail",user.getEmail());
         return "redirect:/user/profile";
     }
-
+    //포스트 삭제
     @PostMapping("/post/delete")
     public String delete(@RequestParam("postId") long postId,@AuthenticationPrincipal User user,RedirectAttributes redirect){
         postService.deletePost(postId);
         redirect.addAttribute("profileEmail",user.getEmail());
         return "redirect:/user/profile";
     }
-
+    //tag 검색
     @GetMapping("/post/search")
     public String search(@RequestParam("tag") String tag,@AuthenticationPrincipal User user ,Model model){
         User findUser = userService.findByEmail(user.getEmail());
@@ -84,6 +85,13 @@ public class PostController {
     public String searchForm(String tag,RedirectAttributes redirect){
         redirect.addAttribute("tag",tag);
         return "redirect:/post/search";
+    }
+
+    @GetMapping("/post/likes")
+    public String likes(@AuthenticationPrincipal User user,Model model){
+        User findUser = userService.findByEmail(user.getEmail());
+        model.addAttribute("user",findUser);
+        return"post/likes";
     }
 
 }

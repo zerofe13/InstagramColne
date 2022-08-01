@@ -37,7 +37,7 @@ public class LikesRepository {
                 .getResultList();
     }
 
-    public List<Likes> findByUserId(String userEmail){
+    public List<Likes> findByUserEmail(String userEmail){
         return em.createQuery("select l from Likes l join fetch l.user where l.user.email =:userEmail",Likes.class)
                 .setParameter("userEmail",userEmail)
                 .getResultList();

@@ -88,12 +88,25 @@ public class PostService {
         return page;
     }
 
-
-
     public Page<PostInfoDto> getTagSearch(String tag,String userEmail,Pageable pageable){
         List<Post> searchList = postRepository.tagSearch(tag, pageable);
         List<PostInfoDto> result = getPostInfoDtos(userEmail,searchList);
         Page<PostInfoDto> page = new PageImpl<>(result);
+        return page;
+    }
+
+    public Page<PostDto> getLikePost(String userEmail,Pageable pageable){
+        List<Post> likePosts = postRepository.findLikePost(userEmail, pageable);
+        List<PostDto> result = new ArrayList<>();
+        for(Post post:likePosts){
+            result.add(PostDto.builder()
+                    .id(post.getId())
+                    .tag(post.getTag())
+                    .text(post.getText())
+                    .postImgFile(post.getPostImgFile())
+                    .build());
+        }
+        Page<PostDto> page = new PageImpl<>(result);
         return page;
     }
 

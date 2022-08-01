@@ -59,6 +59,15 @@ public class PostRepository {
                 .getResultList();
     }
 
+    public List<Post> findLikePost(String userEmail,Pageable pageable){
+        return em.createQuery("select p from Post p join fetch p.user " +
+                        "where p in (select l.post from Likes l where l.user.email =:userEmail) order by p.dateTime DESC ",Post.class)
+                .setParameter("userEmail",userEmail)
+                .setFirstResult(pageable.getPageNumber())
+                .setMaxResults(pageable.getPageSize())
+                .getResultList();
+    }
+
     public void delete(Post post){
         em.remove(post);
     }

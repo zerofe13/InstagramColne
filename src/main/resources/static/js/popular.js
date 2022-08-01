@@ -1,118 +1,35 @@
-
-function toggleSubscribe(toUserId, obj) {
-    if ($(obj).text() === "언팔로우") {
-        $.ajax({
-            type: "delete",
-            url: "/api/follow/" + toUserId,
-        }).done(res => {
-            $(obj).text("팔로우");
-            $(obj).toggleClass("blue");
-        }).fail(error => {
-            console.log("언팔로우 실패", error);
-        });
-    } else {
-        $.ajax({
-            type: "post",
-            url: "/api/follow/" + toUserId,
-        }).done(res => {
-            $(obj).text("언팔로우");
-            $(obj).toggleClass("blue");
-        }).fail(error => {
-            console.log("팔로우 실패", error);
-        });
-    }
-    window.location.reload();
-}
-
-function followerInfoModalOpen(profileEmail) {
-    $(".modal-follower").css("display", "flex");
-
+function storyLoad() {
     $.ajax({
-        url: `/api/follow/${profileEmail}/follower`,
+        url: `/api/post/popular`,
         dataType: "json"
     }).done(res => {
-        console.log(res.toString());
-
-        res.forEach((follow) => {
-            let item = getfollowModalItem(follow);
-            $("#followerModalList").append(item);
+        res.forEach((post) => {
+            let postItem = getLikesItem(post);
+            $("#popular-box").append(postItem);
         });
     }).fail(error => {
-        console.log("구독정보 불러오기 오류", error);
+        console.log("오류", error);
     });
 }
-function followingInfoModalOpen(profileEmail) {
-    $(".modal-following").css("display", "flex");
 
-    $.ajax({
-        url: `/api/follow/${profileEmail}/following`,
-        dataType: "json"
-    }).done(res => {
-        console.log(res.toString());
+storyLoad();
 
-        res.forEach((follow) => {
-            let item = getfollowModalItem(follow);
-            $("#followingModalList").append(item);
-        });
-    }).fail(error => {
-        console.log("구독정보 불러오기 오류", error);
-    });
-}
-function getfollowModalItem(follow) {
-    let item = `<div class="subscribe__item" id="subscribeModalItem-${follow.email}">
-	<div class="subscribe__img">
-	    <a href="/user/profile?profileEmail=${follow.email}" >
-	        <img src="/image/${follow.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg';"/>
-    </a>
-	</div>
-	<div class="subscribe__text">
-		<h2>${follow.name}</h2>
-	</div>
-	<div class="subscribe__btn">`;
-    if(!follow.loginUser){
-        if(follow.followState){
-            item += `<button class="cta-follow blue" onclick="toggleSubscribe(${follow.id}, this)">언팔로우</button>`;
-        }else{
-            item += `<button class="cta-follow" onclick="toggleSubscribe(${follow.id},this)">팔로우</button>`;
-        }
-    }
-    item += `
-	</div>
-</div>`;
+function getLikesItem(post) {
+    let item = `
+        <div class="img-box" onclick="postPopup(${post.id}, '.modal-post')" >                   
+            <img src="/upload/${post.postImgUrl}" onerror="this.src='/img/default_profile.jpg';" />
+                <div class="comment">
+                    <a> <i class="fas fa-heart"></i><span>${post.likesCount}</span></a>
+                </div>
+        </div>
+    `;
 
     return item;
 }
 
-function popup(obj) {
-    $(obj).css("display", "flex");
-}
-
-function closePopup(obj) {
-    $(obj).css("display", "none");
-}
-
-// 사용자 정보(회원정보, 로그아웃, 닫기) 모달
-function modalInfo() {
-    $(".modal-info").css("display", "none");
-}
-
-// (6) 사용자 프로파일 이미지 메뉴(사진업로드, 취소) 모달
-function modalImage() {
-    $(".modal-image").css("display", "none");
-}
-
-// (7) 구독자 정보 모달 닫기
-function modalClose() {
-    $(".modal-follower").css("display", "none");
-    location.reload();
-}
-function modalClose() {
-    $(".modal-following").css("display", "none");
-    location.reload();
-}
-
 //포스트
 function postPopup(postId, obj) {
+    console.log(obj);
     $(obj).css("display", "flex");
 
     $.ajax({
@@ -126,10 +43,15 @@ function postPopup(postId, obj) {
     });
 }
 
+function modalClose() {
+    $(".modal-post").css("display", "none");
+    location.reload();
+}
+
 function getPostModalInfo(postInfoDto) {
     let item = `
     <div class="subscribe-header">
-            <a href="/user/profile?profeilEmail=${postInfoDto.postUploader.email}"><img class="post-img-profile pic" src="/image/${postInfoDto.postUploader.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'"></a>  
+            <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
@@ -139,15 +61,15 @@ function getPostModalInfo(postInfoDto) {
     </div>
     <div class="post-box">
 	    <div class="subscribe__img">
-		    <img src="/image/${postInfoDto.postImgUrl}" />
+		    <img src="/upload/${postInfoDto.postImgUrl}" />
 	    </div>
 	    <div class="post-div">
 	    <div class="post-info">
 	        <div class="text"> `;
     if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
+        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
     }
     item += `
             </div>
@@ -164,7 +86,7 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.dateTime.toLocaleString()}</span>
+            <span>${postInfoDto.createdate.toLocaleString()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;
@@ -223,6 +145,7 @@ function toggleLike(postId) {
             likeIcon.addClass("far");
         }).fail(error=>{
             console.log("오류", error);
+            alert(error.responseText);
         });
     }
 }
@@ -261,7 +184,6 @@ function addComment(postId) {
         commentList.append(content);
     }).fail(error=>{
         console.log("오류", error);
-        alert(error.responseText);
     });
 
     commentInput.val(""); // 인풋 필드를 깨끗하게 비워준다.
