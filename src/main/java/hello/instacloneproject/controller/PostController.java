@@ -1,9 +1,7 @@
 package hello.instacloneproject.controller;
 
-import hello.instacloneproject.domain.Post;
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.dto.Post.PostDto;
-import hello.instacloneproject.dto.Post.PostInfoDto;
 import hello.instacloneproject.dto.Post.PostUpdateDto;
 import hello.instacloneproject.dto.Post.PostUploadDto;
 import hello.instacloneproject.service.LikesService;
@@ -24,7 +22,6 @@ public class PostController {
 
     private final UserService userService;
     private final PostService postService;
-    private final LikesService likesService;
 
     //스토리
     @GetMapping("/post/story")
@@ -87,11 +84,19 @@ public class PostController {
         return "redirect:/post/search";
     }
 
+    //좋아요 페이지
     @GetMapping("/post/likes")
     public String likes(@AuthenticationPrincipal User user,Model model){
         User findUser = userService.findByEmail(user.getEmail());
         model.addAttribute("user",findUser);
         return"post/likes";
+    }
+
+    @GetMapping("/post/popular")
+    public String Popular(@AuthenticationPrincipal User user,Model model){
+        User findUser = userService.findByEmail(user.getEmail());
+        model.addAttribute("user",findUser);
+        return "post/popular";
     }
 
 }

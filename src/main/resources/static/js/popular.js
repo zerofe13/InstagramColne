@@ -17,9 +17,9 @@ storyLoad();
 function getLikesItem(post) {
     let item = `
         <div class="img-box" onclick="postPopup(${post.id}, '.modal-post')" >                   
-            <img src="/upload/${post.postImgUrl}" onerror="this.src='/img/default_profile.jpg';" />
+            <img src="/image/${post.postImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg';" />
                 <div class="comment">
-                    <a> <i class="fas fa-heart"></i><span>${post.likesCount}</span></a>
+<!--                    <a> <i class="fas fa-heart"></i><span>${post.likesCount}</span></a>-->
                 </div>
         </div>
     `;
@@ -51,7 +51,7 @@ function modalClose() {
 function getPostModalInfo(postInfoDto) {
     let item = `
     <div class="subscribe-header">
-            <a href="/user/profile?id=${postInfoDto.postUploader.id}"><img class="post-img-profile pic" src="/profile_imgs/${postInfoDto.postUploader.profileImgUrl}" onerror="this.src='/img/default_profile.jpg'""></a>  
+            <a href="/user/profile?profileEmail=${postInfoDto.postUploader.email}"><img class="post-img-profile pic" src="/image/${postInfoDto.postUploader.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'"></a>  
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
@@ -61,15 +61,15 @@ function getPostModalInfo(postInfoDto) {
     </div>
     <div class="post-box">
 	    <div class="subscribe__img">
-		    <img src="/upload/${postInfoDto.postImgUrl}" />
+		    <img src="/image/${postInfoDto.postImgUrl}" />
 	    </div>
 	    <div class="post-div">
 	    <div class="post-info">
 	        <div class="text"> `;
     if(postInfoDto.likeState) {
-        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="fas fa-heart active" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
     } else {
-        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likesCount}</i>`;
+        item += `<i class="far fa-heart" id="storyLikeIcon" onclick="toggleLike(${postInfoDto.id})">${postInfoDto.likeCount}</i>`;
     }
     item += `
             </div>
@@ -86,7 +86,7 @@ function getPostModalInfo(postInfoDto) {
             </div>
         </div>
         <div class="subscribe__img">
-            <span>${postInfoDto.createdate.toLocaleString()}</span>
+            <span>${postInfoDto.dateTime.toLocaleString()}</span>
         </div>
         <div class="comment-section" >
                 <ul class="comments" id="storyCommentList-${postInfoDto.id}">`;

@@ -1,10 +1,7 @@
 package hello.instacloneproject.service;
 
 import hello.instacloneproject.domain.*;
-import hello.instacloneproject.dto.Post.PostDto;
-import hello.instacloneproject.dto.Post.PostInfoDto;
-import hello.instacloneproject.dto.Post.PostUpdateDto;
-import hello.instacloneproject.dto.Post.PostUploadDto;
+import hello.instacloneproject.dto.Post.*;
 import hello.instacloneproject.file.FileStore;
 import hello.instacloneproject.repository.LikesRepository;
 import hello.instacloneproject.repository.PostRepository;
@@ -108,6 +105,11 @@ public class PostService {
         }
         Page<PostDto> page = new PageImpl<>(result);
         return page;
+    }
+
+    public List<PopularPostDto> getPopularPosts(){
+        return postRepository.findPopularPost();
+
     }
 
     private List<PostInfoDto> getPostInfoDtos(String userEmail, List<Post> storyList) {

@@ -1,6 +1,7 @@
 package hello.instacloneproject.repository;
 
 import hello.instacloneproject.domain.Post;
+import hello.instacloneproject.dto.Post.PopularPostDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -59,12 +60,30 @@ public class PostRepository {
                 .getResultList();
     }
 
+
+    /**
+     * 좋아요를 누른 포스트만 가지고오는 메소드
+     * Likes 엔티티의 유저와 사용자와 같은 포스트만 가지고온다.
+     */
     public List<Post> findLikePost(String userEmail,Pageable pageable){
         return em.createQuery("select p from Post p join fetch p.user " +
                         "where p in (select l.post from Likes l where l.user.email =:userEmail) order by p.dateTime DESC ",Post.class)
                 .setParameter("userEmail",userEmail)
                 .setFirstResult(pageable.getPageNumber())
                 .setMaxResults(pageable.getPageSize())
+                .getResultList();
+    }
+
+    /**
+     * Dto를 이용해 직접 조회하는 방시을 이용
+     * group by 와 Count를 이용하여 좋아요 수가 높은순 부터 12개를
+     * 조회하는 쿼리 작성
+     */
+    public List<PopularPostDto> findPopularPost(){
+        return em.createQuery("select new hello.instacloneproject.dto.Post.PopularPostDto(p.id,p.postImgFile,count(p.user)) " +
+                        "from Likes l join l.post p group by l.post " +
+                        "order by count(p.user) DESC ", PopularPostDto.class)
+                .setMaxResults(12)
                 .getResultList();
     }
 

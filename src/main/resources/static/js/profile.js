@@ -129,7 +129,7 @@ function postPopup(postId, obj) {
 function getPostModalInfo(postInfoDto) {
     let item = `
     <div class="subscribe-header">
-            <a href="/user/profile?profeilEmail=${postInfoDto.postUploader.email}"><img class="post-img-profile pic" src="/image/${postInfoDto.postUploader.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'"></a>  
+            <a href="/user/profile?profileEmail=${postInfoDto.postUploader.email}"><img class="post-img-profile pic" src="/image/${postInfoDto.postUploader.profileImgFile?.storeFileName}" onerror="this.src='/img/default_profile.jpg'"></a>  
             <span>${postInfoDto.postUploader.name}</span> `;
     item += `<button class="exit" onclick="modalClose()"><i class="fas fa-times"></i></button>`
     if(postInfoDto.uploader) {
