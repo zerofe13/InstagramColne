@@ -20,6 +20,8 @@ import org.springframework.security.web.SecurityFilterChain;
 @RequiredArgsConstructor
 public class SecurityConfig{
 
+    private final Oauth2DetailsService oauth2DetailsService;
+
     @Bean
     @Order(SecurityProperties.BASIC_AUTH_ORDER)
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
@@ -38,6 +40,12 @@ public class SecurityConfig{
                 .logout()
                 .logoutSuccessUrl("/login")
                 .invalidateHttpSession(true);
+        http
+                .oauth2Login()
+                .loginPage("/login")
+                .defaultSuccessUrl("/user/profile")
+                .userInfoEndpoint()
+                .userService(oauth2DetailsService);
         return http.build();
     }
 

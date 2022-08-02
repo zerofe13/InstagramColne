@@ -1,5 +1,6 @@
 package hello.instacloneproject.controller;
 
+import hello.instacloneproject.config.PrincipalDetails;
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.dto.user.UserProfileDto;
 import hello.instacloneproject.dto.user.UserSignupDto;
@@ -51,8 +52,8 @@ public class UserController {
     }
 
     @GetMapping("/user/update")
-    public String update(@AuthenticationPrincipal User user, Model model){
-        User findUser = userService.findByEmail(user.getEmail());
+    public String update(@AuthenticationPrincipal PrincipalDetails principal, Model model){
+        User findUser = userService.findByEmail(principal.getUsername());
         model.addAttribute("user",findUser);
         return"user/update";
     }
@@ -65,8 +66,8 @@ public class UserController {
     }
 
     @GetMapping("/user/profile")
-    public String profile(@AuthenticationPrincipal User user, @RequestParam(required = false) String profileEmail, Model model){
-        User findUser = userService.findByEmailWithPostList(user.getEmail());
+    public String profile(@AuthenticationPrincipal PrincipalDetails principal, @RequestParam(required = false) String profileEmail, Model model){
+        User findUser = userService.findByEmailWithPostList(principal.getUsername());
         if(profileEmail == null){
             UserProfileDto userProfile = getUserProfile(findUser.getEmail(), findUser);
             model.addAttribute("user",findUser);

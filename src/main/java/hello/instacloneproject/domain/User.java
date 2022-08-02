@@ -15,7 +15,7 @@ import java.util.List;
 @Getter @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(name = "USER_TABLE")
-public class User implements UserDetails { // 스프링 시큐리티를 위해 UserDetails 구현
+public class User { // 스프링 시큐리티를 위해 UserDetails 구현
 
     @Id @GeneratedValue
     @Column(name = "user_id")
@@ -49,39 +49,6 @@ public class User implements UserDetails { // 스프링 시큐리티를 위해 U
         this.website = website;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
-    }
 
-    @Override
-    public String getPassword() {
-        return password;
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return true;
-    }
 
 }

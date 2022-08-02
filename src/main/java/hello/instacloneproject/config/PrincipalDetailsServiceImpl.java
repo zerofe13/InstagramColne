@@ -4,7 +4,6 @@ import hello.instacloneproject.domain.User;
 import hello.instacloneproject.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -16,7 +15,7 @@ import java.util.Optional;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class UserDetailsServiceImpl implements UserDetailsService {
+public class PrincipalDetailsServiceImpl implements UserDetailsService {
 
     private final UserRepository userRepository;
 
@@ -30,16 +29,6 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             log.info(" 실패");
             throw new UsernameNotFoundException("입력한 계정을 찾을 수 없습니다.");
         }
-        return User.builder()
-                .email(findUser.get().getEmail())
-                .password(findUser.get().getPassword())
-                .name(findUser.get().getName())
-                .phone(findUser.get().getPhone())
-                .profileImgFile(findUser.get().getProfileImgFile())
-                .title(findUser.get().getTitle())
-                .website(findUser.get().getWebsite())
-                .build();
-
-
+        return new PrincipalDetails(findUser.get());
     }
 }

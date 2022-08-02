@@ -1,5 +1,6 @@
 package hello.instacloneproject.api;
 
+import hello.instacloneproject.config.PrincipalDetails;
 import hello.instacloneproject.domain.Comment;
 import hello.instacloneproject.domain.User;
 import hello.instacloneproject.dto.Comment.CommentDto;
@@ -17,8 +18,8 @@ public class CommentApiController {
     private final CommentService commentService;
 
     @PostMapping("/comment")
-    public CommentDto addComment(@RequestBody CommentUploadDto commentUploadDto, @AuthenticationPrincipal User user){
-        return commentService.addComment(commentUploadDto.getPostId(),user.getEmail(),commentUploadDto.getText());
+    public CommentDto addComment(@RequestBody CommentUploadDto commentUploadDto, @AuthenticationPrincipal PrincipalDetails principal){
+        return commentService.addComment(commentUploadDto.getPostId(), principal.getUsername(), commentUploadDto.getText());
     }
 
     @DeleteMapping("/comment/{id}")
