@@ -37,18 +37,18 @@ public class UserService {
     public void update(UserUpdateDto userUpdateDto) throws IOException {
         User findUser = userRepository.findById(userUpdateDto.getId());
         BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-        if(findUser.getProfileImgFile() != null){
-            File file = new File(fileDir + findUser.getProfileImgFile().getStoreFileName());
-            file.delete();
+        if(!userUpdateDto.getProfileImgFile().isEmpty()){
+            if(findUser.getProfileImgFile() != null){
+                File file = new File(fileDir + findUser.getProfileImgFile().getStoreFileName());
+                file.delete();
+            }
+            UploadFile uploadFile = fileStore.storeFile(userUpdateDto.getProfileImgFile());
+            findUser.setProfileImgFile(uploadFile);
         }
-
-        UploadFile uploadFile = fileStore.storeFile(userUpdateDto.getProfileImgFile());
 
         findUser.setPassword(encoder.encode(userUpdateDto.getPassword()));
         findUser.setPhone(userUpdateDto.getPhone());
         findUser.setName(userUpdateDto.getName());
-        findUser.setProfileImgFile(uploadFile);
         findUser.setTitle(userUpdateDto.getTitle());
 
     }

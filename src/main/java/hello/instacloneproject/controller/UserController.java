@@ -9,11 +9,14 @@ import hello.instacloneproject.file.FileStore;
 import hello.instacloneproject.service.FollowService;
 import hello.instacloneproject.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.UrlResource;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -22,7 +25,7 @@ import java.net.MalformedURLException;
 
 @Controller
 @RequiredArgsConstructor
-
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -41,12 +44,17 @@ public class UserController {
 
 
     @GetMapping("/signup")
-    public String signup(){
+    public String signup(Model model)
+    {
+        model.addAttribute("user",new UserSignupDto());
         return "signup";
     }
 
     @PostMapping("/signup")
-    public String signup(@ModelAttribute UserSignupDto userLoginDto){
+    public String signup(@Validated @ModelAttribute("user") UserSignupDto userLoginDto, BindingResult bindingResult){
+        if(bindingResult.hasErrors()){
+            return "signup";
+        }
         userService.join(userLoginDto);
         return "redirect:/login";
     }
@@ -59,7 +67,10 @@ public class UserController {
     }
 
     @PostMapping("/user/update")
-    public String update(@ModelAttribute UserUpdateDto userUpdateDto, RedirectAttributes redirect) throws IOException {
+    public String update(@Validated @ModelAttribute("user") UserUpdateDto userUpdateDto,BindingResult bindingResult ,RedirectAttributes redirect) throws IOException {
+        if(bindingResult.hasErrors()){
+            return "signup";
+        }
         userService.update(userUpdateDto);
         redirect.addAttribute("profileEmail",userUpdateDto.getEmail());
         return "redirect:/user/profile";

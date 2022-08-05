@@ -16,10 +16,12 @@
 <body>
 <div class="container">
     <img class="logo_instagram" src="/img/logo_text.png" alt="instagram_logo">
-    <form role="form" action="/signup" method="post">
+    <form role="form" action="/signup" th:action th:object="${user}" method="post">
         <input type="email" class="input_signup" name="email" id="email" placeholder="이메일 주소" required="required"  maxlength="30"/>
-        <input type="password" class="input_signup" name="password" id="password" placeholder="비밀번호" required="required" />
-        <input type="text" class="input_signup" name="phone" id="phone" placeholder="전화번호" required="required" />
+        <input type="password" class="input_signup" th:field="*{password}" id="password" placeholder="비밀번호" required="required" th:errorClass = "field-error"/>
+        <div class ="field-error" th:errors="*{password}">패스워드 오류</div>
+        <input type="text" class="input_signup" name="phone" id="phone" th:field="*{phone}" placeholder="전화번호" required="required" />
+        <div class ="field-error" th:errors="*{phone}">전화번호 오류</div>
         <input type="text" class="input_signup" name="name" id="name" placeholder="성명" required="required" />
         <button type="submit" id="btn_signup"> 가입 </button>
     </form>

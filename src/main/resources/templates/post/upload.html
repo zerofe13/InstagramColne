@@ -20,15 +20,17 @@
 
         <!--사진업로드 Form-->
         <form class="upload-form" action="/post" method="post" enctype="multipart/form-data">
-            <input  type="file" name="postImgFile" id="postImgFile" th:onchange="|imageChoose(this)|"/>
+            <input  type="file" name="postImgFile" id="postImgFile" th:field = "${post.postImgFile}" th:onchange="|imageChoose(this)|" th:errorClass = "field-error"/>
             <div class="upload-img">
                 <img src="/img/default_profile.jpg" alt="" id="imageUploadPreview" />
             </div>
+            <div class ="field-error" th:errors="${post.postImgFile}">이미지 오류</div>
 
             <!--사진설명 + 업로드버튼-->
             <div class="upload-form-detail">
                 <textarea class="input_upload" name="text" id="text" rows="5"> </textarea>
-                <input type="text" placeholder="태그. 공백 없이 ,로 구분하여 입력해주세요." name="tag" id="tag" />
+                <input type="text" placeholder="태그. 공백 없이 ,로 구분하여 입력해주세요." name="tag" id="tag" th:field = "${post.tag}" th:errorClass = "field-error"/>
+                <div class ="field-error" th:errors="${post.tag}">테그 오류</div>
                 <button class="cta blue" >업로드</button>
             </div>
             <!--사진설명end-->

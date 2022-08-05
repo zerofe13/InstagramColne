@@ -61,9 +61,9 @@ public class PostService {
         postRepository.delete(findPost);
     }
 
-    public PostDto getPostDtoById(Long id){
+    public PostUpdateDto getPostDtoById(Long id){
         Post findPost = postRepository.findById(id);
-        return PostDto.builder()
+        return PostUpdateDto.builder()
                 .id(findPost.getId())
                 .tag(findPost.getTag())
                 .text(findPost.getText())
