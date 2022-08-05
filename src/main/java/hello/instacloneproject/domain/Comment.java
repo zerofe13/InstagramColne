@@ -1,5 +1,7 @@
 package hello.instacloneproject.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
 
 import javax.persistence.*;
@@ -16,7 +18,7 @@ public class Comment {
     private long id;
 
     private String text;
-
+    @JsonIgnoreProperties({"user"})
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
