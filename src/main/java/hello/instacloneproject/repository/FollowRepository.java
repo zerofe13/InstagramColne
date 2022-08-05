@@ -39,7 +39,7 @@ public class FollowRepository {
     }
 
     public Optional<Follow> findByFollowingEmailAndFollowerEmail(String followingEmail,String followerEmail){
-        return em.createQuery("select f from Follow f where f.followedUser.email =:followerEamil and f.followingUser.email =:followingEmail")
+        return em.createQuery("select f from Follow f where f.followedUser.email =:followerEamil and f.followingUser.email =:followingEmail",Follow.class)
                 .setParameter("followerEamil",followerEmail)
                 .setParameter("followingEmail",followingEmail)
                 .getResultList().stream().findFirst();

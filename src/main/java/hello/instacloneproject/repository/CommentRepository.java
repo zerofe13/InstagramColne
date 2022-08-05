@@ -24,7 +24,7 @@ public class CommentRepository {
     }
 
     public List<Comment> findByPostId(long id){
-        return em.createQuery("select c from Comment c join fetch c.post join fetch c.user where c.post.id =: id ORDER BY c.dateTime")
+        return em.createQuery("select c from Comment c join fetch c.user join fetch c.post where c.post.id =: id ORDER BY c.dateTime",Comment.class)
                 .setParameter("id",id)
                 .getResultList();
     }

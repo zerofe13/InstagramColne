@@ -18,7 +18,7 @@ public class Comment {
     private long id;
 
     private String text;
-    @JsonIgnoreProperties({"user"})
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
