@@ -1,9 +1,5 @@
 package hello.instacloneproject.domain;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.*;
-
 import javax.persistence.*;
 import java.time.LocalDateTime;
 

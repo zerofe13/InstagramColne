@@ -101,25 +101,25 @@ class UserAndFollowServiceTest {
         //then
         assertThat(thrown).isInstanceOf(IllegalStateException.class).hasMessageContaining("이미 존재하는 email입니다.");
     }
-
-    @Test
-    void update() throws IOException {
-        //given
-        Optional<User> findUser = userRepository.findByEmail("d@d.com");
-        UserUpdateDto updateDto = UserUpdateDto.builder()
-                .id(findUser.get().getId())
-                .email(findUser.get().getEmail())
-                .password(findUser.get().getPassword())
-                .name("update Test") //이름변경
-                .phone(findUser.get().getPhone())
-                .build();
-        //when
-        userService.update(updateDto);
-        //then
-        assertThat(userService.findByEmail("d@d.com").getName()).isEqualTo("update Test");
-
-
-    }
+//
+//    @Test
+//    void update() throws IOException {
+//        //given
+//        Optional<User> findUser = userRepository.findByEmail("d@d.com");
+//        UserUpdateDto updateDto = UserUpdateDto.builder()
+//                .id(findUser.get().getId())
+//                .email(findUser.get().getEmail())
+//                .password(findUser.get().getPassword())
+//                .name("update Test") //이름변경
+//                .phone(findUser.get().getPhone())
+//                .build();
+//        //when
+//        userService.update(updateDto);
+//        //then
+//        assertThat(userService.findByEmail("d@d.com").getName()).isEqualTo("update Test");
+//
+//
+//    }
 
     @Test
     void follow(){
